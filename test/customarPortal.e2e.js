@@ -6,6 +6,7 @@ const LoginPage = require('../pageobjects/login.page')
 const testData = require('../data/config');
 
 describe('Customer Portal Application', () => {
+
   before(async () => {
     allureReporter.addSeverity('blocker');
     await LoginPage.open();
@@ -40,8 +41,5 @@ describe('Customer Portal Application', () => {
     await HomePage.doClickOnViewApplications();
   });
 
-  // afterEach(async () => {
-  //   await browser.pause(5000);
-  //   await HomePage.doClickOnViewApplications();
-  // });
+  
 })
