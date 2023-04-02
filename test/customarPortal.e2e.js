@@ -1,0 +1,47 @@
+const HomePage = require('../pageobjects/home.page')
+const DevopsPage = require('../pageobjects/devops.page')
+const CustPortalPage = require('../pageobjects/custPortal.page')
+const adminPage = require('../pageobjects/admin.page')
+const LoginPage = require('../pageobjects/login.page')
+const testData = require('../data/config');
+
+describe('Customer Portal Application', () => {
+  before(async () => {
+    allureReporter.addSeverity('blocker');
+    await LoginPage.open();
+    await browser.maximizeWindow();
+    if (await LoginPage.doLogin(testData.username, testData.password)) {
+      allureReporter.addStep("Logged in Successfully")
+    } else {
+      allureReporter.addStep("Login Failed! Check credentials")
+    }
+
+  });
+  it('Verify devops portal page', async () => {
+    await HomePage.doClickOnDevopsPortalLink();
+    await DevopsPage.doVerifyDevopsPageTabs();
+    await browser.pause(5000);
+    await HomePage.doClickOnViewApplications();
+
+  });
+
+  it('Verify cust portal page', async () => {
+    await HomePage.doClickOnCustPortalLink();
+    await CustPortalPage.doVerifyCustPortalTitle();
+    await browser.pause(5000);
+    await HomePage.doClickOnViewApplications();
+  });
+
+  it('Verify admin portal page', async () => {
+    await HomePage.doClickOnAdminLink();
+    await adminPage.doVerifyAdminPageTitleIsDisplayed();
+    await adminPage.doVerifyAdminPageTabs();
+    await browser.pause(5000);
+    await HomePage.doClickOnViewApplications();
+  });
+
+  // afterEach(async () => {
+  //   await browser.pause(5000);
+  //   await HomePage.doClickOnViewApplications();
+  // });
+})
