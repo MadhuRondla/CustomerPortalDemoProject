@@ -26,6 +26,29 @@ class CustPortalPageElements{
     get successMsg(){return $('//div[contains(text(),"Success")]')}
     get patchDeleteIcon(){return $$('//mat-icon[text()="delete"]')}
     get deleteConfirmation(){return $('//span[text()="DELETE"]')}
+    get ticketsList(){return  $$('//td[contains(@class,"mat-column-ticketId")]/span/span')}
+    get createTicketIcon(){return $('//button[@title="Create Tickect"]')}
+    get accountIdDrpdwn(){return $('//mat-select[@formcontrolname="accountId"]')}
+    get productIdDrpdwn(){return $('//mat-select[@formcontrolname="productId"]')}
+    get userIdDrpdwn(){return $('//mat-select[@formcontrolname="userId"]')}
+    get zendeskTicketNumberInput(){return $('//input[@formcontrolname="zendeskTicketNumber"]')}
+    get ticketSummaryInput(){return $('//input[@formcontrolname="ticketSummary"]')}
+    get ticketDescInput(){return $('//textarea[@formcontrolname="ticketDescription"]')}
+    get createBtn(){return $('//span[text()="CREATE"]')}
+    get filterListIconInPatchesTab(){return $('//mat-icon[text()="filter_list"]')}
+    get patchNameHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-seededPatchName")]')}
+    get checkboxHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-checkbox")]')}
+
+    get patchCategoryHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-patchCategory")]')}
+    get baseVersionHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-baseVersion")]')}
+    get patchTypeHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-patchType")]')}
+    get productHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-productName")]')}
+    get solNameHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-solutionCode")]')}
+    get statusHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-patchStatus")]')}
+    get actionsHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-actions")]')}
+    
+
+
 //******************Dynamic Locators ************************************************************************* */
     get productNameOption() {
         return (text) => {
@@ -75,6 +98,29 @@ class CustPortalPageElements{
     get dependentPatchOption(){
         return (text) => {
             return $(`//span[contains(text(),"${text}")]`)
+        }
+    }
+
+    get accountIdOption(){
+        return (text) => {
+            return $(`//span[contains(text(),"${text}")]`)
+        }
+    }
+    get productIdOption(){
+        return (text) => {
+            return $(`//span[contains(text(),"${text}")]`)
+        }
+    }
+
+    get userIdOption(){
+        return (text) => {
+            return $(`//span[contains(text(),"${text}")]`)
+        }
+    }
+
+    get filterListItem(){
+        return(text) =>{
+            return $(`//span[contains(text(),"${text}")]/ancestor::button[contains(@class,"checkbox-item")]`)
         }
     }
 

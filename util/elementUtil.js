@@ -1,7 +1,9 @@
+//import { MouseEvent } from 'jsdom'
+//const MouseEvent = require('jsdom')
 class ElementUtil{
     
   async doClick(element){
-    browser.waitUntil(() => browser.execute(() => document.readyState === 'complete'), 10000);
+   // browser.waitUntil(() => browser.execute(() => document.readyState === 'complete'), 10000);
 
     await element.waitForDisplayed({ timeout: 5000 })
     await element.click();
@@ -14,7 +16,7 @@ class ElementUtil{
   }
 
    async doVerifyIsDisplayed(element){
-   await browser.waitUntil(() => browser.execute(() => document.readyState === 'complete'), 10000);
+   //await browser.waitUntil(() => browser.execute(() => document.readyState === 'complete'), 10000);
    await element.waitForDisplayed({ timeout: 5000 })
    let displayed = await element.isDisplayed()
     return displayed
@@ -32,6 +34,16 @@ class ElementUtil{
     await element.click();
     browser.keys(['Escape']);
   }
+
+  async simulateClick(element) {
+    await this.trigger(element, 'mousedown');
+    await this.trigger(element, 'click');
+    await this.trigger(element, 'mouseup');
+  }
+  async trigger(elem, event) {
+    await elem.dispatchEvent(new MouseEvent(event));
+  }
+
 
   
 

@@ -1,6 +1,7 @@
 const LoginPage = require('./pageobjects/login.page')
 const testData = require('./data/config');
 const allure = require('allure-commandline')
+const allureReporter = require('@wdio/allure-reporter').default
 
 exports.config = {
     //
@@ -11,6 +12,11 @@ exports.config = {
     runner: 'local',
     sync: true,
     
+    timeouts: {
+        pageLoad: 10000,
+        script: 5000,
+        element:5000
+      },
     //
     // ==================
     // Specify Test Files
@@ -165,7 +171,8 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 99999
+        timeout: 99999999,
+        retries:2
     },
     //
     // =====
@@ -226,14 +233,10 @@ exports.config = {
      * @param {Object}         browser      instance of created browser/device session
      */
     before: async function (capabilities, specs) {
-        //allureReporter.addSeverity('blocker');
-        // await LoginPage.open();
-        // await browser.maximizeWindow();
-        // if(await LoginPage.doLogin(testData.username, testData.password)){
-        //  //allureReporter.addStep("Logged in Successfully")
-        // }else{
-        //  //allureReporter.addStep("Login Fail! Check credentials")
-        // }
+        allureReporter.addSeverity('blocker');
+        await LoginPage.open();
+        await browser.maximizeWindow();
+        await LoginPage.doLogin(testData.username, testData.password)
     },
     /**
      * Runs before a WebdriverIO command gets executed.
