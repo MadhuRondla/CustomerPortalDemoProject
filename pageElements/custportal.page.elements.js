@@ -46,6 +46,8 @@ class CustPortalPageElements{
     get solNameHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-solutionCode")]')}
     get statusHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-patchStatus")]')}
     get actionsHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-actions")]')}
+
+    get alertDialog(){return $('//div[@role="alertdialog"]')}
     
 
 

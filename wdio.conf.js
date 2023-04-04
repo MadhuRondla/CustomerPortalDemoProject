@@ -190,9 +190,14 @@ exports.config = {
     onPrepare: function (config, capabilities) {
         const fs = require('fs')
         let dir = './allure-results'
+        let dir1 = './allure-report'
         if (fs.existsSync(dir)) {
             fs.rmSync(dir, { recursive: true })
             console.log(`${dir} is deleted`)
+        }
+        if (fs.existsSync(dir1)) {
+            fs.rmSync(dir1, { recursive: true })
+            console.log(`${dir1} is deleted`)
         }
     },
     /**

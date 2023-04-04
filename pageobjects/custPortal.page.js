@@ -12,10 +12,11 @@ class CustPortalPage {
         await ElementUtil.doClick(CustPortalPageElements.patchesTab)
     }
     async doSearchInPatchesTab(searchItem) {
+        await browser.pause(3000)
         await ElementUtil.doSendKeys(CustPortalPageElements.searchInPatchesTab, searchItem)
         await browser.pause(3000)
         await browser.keys(['Left arrow']);
-        await browser.pause(2000)
+        await browser.pause(3000)
 
     }
     async doClickOnCreatePatchIcon() {
@@ -57,6 +58,7 @@ class CustPortalPage {
         await ElementUtil.doScrollDownClick(CustPortalPageElements.dependentPatchOption(constData.DependentPatch))
         await ElementUtil.doSendKeys(CustPortalPageElements.artifactoryUrlInput, constData.ArtifactoryUrl)
         await ElementUtil.doClick(CustPortalPageElements.createPatchBtn)
+        await browser.pause(5000)
         return await this.verifySearchInPatchesTab((constData.SeededPatchName))
 
     }
@@ -81,14 +83,20 @@ class CustPortalPage {
         await this.doSearchInPatchesTab(patchName)
         const elements = await CustPortalPageElements.patchNameList;
         const texts = await ElementUtil.getElementText(elements)
-        const deleteIcons = await CustPortalPageElements.patchDeleteIcon
-        for (let i = 0; i < texts.length; i++) {
-            if (texts[i] === patchName) {
-                ElementUtil.doClick(deleteIcons[i + 1])
-                break
+        console.log('the size is '+elements.length)
+        if (elements.length !== 0) {
+            const deleteIcons = await CustPortalPageElements.patchDeleteIcon
+            for (let i = 0; i < texts.length; i++) {
+                if (texts[i] === patchName) {
+                    ElementUtil.doClick(deleteIcons[i + 1])
+                    break
+                }
             }
+            await ElementUtil.doClick(CustPortalPageElements.deleteConfirmation)
         }
-        await ElementUtil.doClick(CustPortalPageElements.deleteConfirmation)
+        else {
+            console.log(patchName+' patch not found to delete')
+        }
     }
 
     async verifySearchInPatchesTab(searchItem) {

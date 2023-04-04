@@ -1,5 +1,6 @@
 const homePageElements = require('../pageElements/home.page.elements');
 const ElementUtil = require('../util/elementUtil')
+const CustPortalPageElements = require('../pageElements/custportal.page.elements')
 
 class HomePage {
     
@@ -12,7 +13,7 @@ class HomePage {
     async doClickOnAdminLink(){
         await ElementUtil.doClick(homePageElements.adminLink)
     }
-    async doClickOnViewApplications(){
+    async doClickOnViewApplications(){       
         await ElementUtil.doClick(homePageElements.viewApplications)
     }
 }

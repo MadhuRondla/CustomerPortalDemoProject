@@ -3,8 +3,7 @@
 class ElementUtil{
     
   async doClick(element){
-   // browser.waitUntil(() => browser.execute(() => document.readyState === 'complete'), 10000);
-
+   
     await element.waitForDisplayed({ timeout: 5000 })
     await element.click();
   }
@@ -43,9 +42,6 @@ class ElementUtil{
   async trigger(elem, event) {
     await elem.dispatchEvent(new MouseEvent(event));
   }
-
-
-  
 
 
 }module.exports = new ElementUtil();
