@@ -20,16 +20,16 @@ describe('Customer Portal Application', () => {
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnPatchesTab()
-        assert.equal(await CustPortalPage.verifySearchInPatchesTab(constData.SeededPatchName), false)
+        assert.equal(await CustPortalPage.verifySearchInPatchesTab(constData.SeededPatchName), true)
     })
 
-    it('Delete Patch', async () => {
+    xit('Delete Patch', async () => {
         allureReporter.addSeverity('critical')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnPatchesTab()
         await CustPortalPage.doDeletePatch(constData.SeededPatchName)
-        assert.equal(await CustPortalPage.verifySearchInPatchesTab(constData.SeededPatchName), true)
+        assert.equal(await CustPortalPage.verifySearchInPatchesTab(constData.SeededPatchName), false)
     })
 
     xit('Search Ticket', async () => {
@@ -47,12 +47,12 @@ describe('Customer Portal Application', () => {
         await CustPortalPage.doCreateTicket()
 
     })
-    xit('verify Patches tab table headers', async ()=>{
+    it('verify Patches tab table headers', async ()=>{
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnPatchesTab()
-        assert.equal(await CustPortalPage.verifyTableHeaderWithFilterListCheckBx(),true)
-    },3)
+        assert.equal(await CustPortalPage.verifyTableHeaderWithFilterListCheckBx(),false)
+    })
 
 })

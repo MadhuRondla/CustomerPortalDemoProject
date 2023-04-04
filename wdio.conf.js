@@ -77,7 +77,10 @@ exports.config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
+                   '--no-sandbox',
+                   '--disable-infobars',
                 // '--headless', // This will start Chrome in headless mode
+                   '--disable-gpu'
             ],
         },
         acceptInsecureCerts: true
@@ -172,7 +175,7 @@ exports.config = {
     mochaOpts: {
         ui: 'bdd',
         timeout: 99999999,
-        retries:2
+        retries:1
     },
     //
     // =====
@@ -190,14 +193,9 @@ exports.config = {
     onPrepare: function (config, capabilities) {
         const fs = require('fs')
         let dir = './allure-results'
-        let dir1 = './allure-report'
         if (fs.existsSync(dir)) {
             fs.rmSync(dir, { recursive: true })
             console.log(`${dir} is deleted`)
-        }
-        if (fs.existsSync(dir1)) {
-            fs.rmSync(dir1, { recursive: true })
-            console.log(`${dir1} is deleted`)
         }
     },
     /**

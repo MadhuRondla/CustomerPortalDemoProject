@@ -165,7 +165,6 @@ class CustPortalPage {
                     break;
                 case 'Patch Name':
                     flag = await CustPortalPageElements.patchNameHeaderInPatchesTab.isDisplayed();
-                    console.log('the flag is ' + flag)
                     break;
                 case 'Patch Category':
                     flag = await CustPortalPageElements.patchCategoryHeaderInPatchesTab.isDisplayed();

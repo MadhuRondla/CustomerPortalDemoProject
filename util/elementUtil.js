@@ -1,5 +1,4 @@
-//import { MouseEvent } from 'jsdom'
-//const MouseEvent = require('jsdom')
+
 class ElementUtil{
     
   async doClick(element){
@@ -9,13 +8,11 @@ class ElementUtil{
   }
 
   async doSendKeys(element,value){
-    //browser.waitUntil(() => browser.execute(() => document.readyState === 'complete'), 10000);
     await element.waitForDisplayed({ timeout: 5000 })
     await element.setValue(value);
   }
 
    async doVerifyIsDisplayed(element){
-   //await browser.waitUntil(() => browser.execute(() => document.readyState === 'complete'), 10000);
    await element.waitForDisplayed({ timeout: 5000 })
    let displayed = await element.isDisplayed()
     return displayed

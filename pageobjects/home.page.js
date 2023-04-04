@@ -1,6 +1,5 @@
 const homePageElements = require('../pageElements/home.page.elements');
 const ElementUtil = require('../util/elementUtil')
-const CustPortalPageElements = require('../pageElements/custportal.page.elements')
 
 class HomePage {
     
