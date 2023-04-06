@@ -1,24 +1,23 @@
 
-class ElementUtil{
-    
-  async doClick(element){
-   
+class ElementUtil {
+
+  async doClick(element) {
     await element.waitForDisplayed({ timeout: 5000 })
     await element.click();
   }
 
-  async doSendKeys(element,value){
+  async doSendKeys(element, value) {
     await element.waitForDisplayed({ timeout: 5000 })
     await element.setValue(value);
   }
 
-   async doVerifyIsDisplayed(element){
-   await element.waitForDisplayed({ timeout: 5000 })
-   let displayed = await element.isDisplayed()
+  async doVerifyIsDisplayed(element) {
+    await element.waitForDisplayed({ timeout: 5000 })
+    let displayed = await element.isDisplayed()
     return displayed
   }
 
-  async getElementText(elements){
+  async getElementText(elements) {
     return Promise.all(elements.map((el) => el.getText()))
   }
 
@@ -40,5 +39,19 @@ class ElementUtil{
     await elem.dispatchEvent(new MouseEvent(event));
   }
 
+  async doGetValue(element) {
+    await element.waitForDisplayed({ timeout: 5000 })
+    return element.getValue()
+  }
+  async doGetText(element) {
+    await element.waitForDisplayed({ timeout: 5000 })
+    return element.getText()
+  }
 
-}module.exports = new ElementUtil();
+  async doWaitUntillInVisible(element) {
+    await element.waitForDisplayed({ timeout: 5000 })
+    await element.waitForDisplayed({ timeout: 20000, reverse: true, interval: 1000 })
+  }
+
+
+} module.exports = new ElementUtil();

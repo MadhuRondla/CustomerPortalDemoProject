@@ -1,6 +1,7 @@
 const CustPortalPageElements = require('../pageElements/custportal.page.elements')
 const ElementUtil = require('../util/elementUtil')
 const constData = require('../data/const')
+const assert = require('assert')
 
 class CustPortalPage {
 
@@ -58,7 +59,7 @@ class CustPortalPage {
         await ElementUtil.doScrollDownClick(CustPortalPageElements.dependentPatchOption(constData.DependentPatch))
         await ElementUtil.doSendKeys(CustPortalPageElements.artifactoryUrlInput, constData.ArtifactoryUrl)
         await ElementUtil.doClick(CustPortalPageElements.createPatchBtn)
-        await browser.pause(5000)
+        await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
         return await this.verifySearchInPatchesTab((constData.SeededPatchName))
 
     }
@@ -76,14 +77,13 @@ class CustPortalPage {
         await ElementUtil.doSendKeys(CustPortalPageElements.ticketSummaryInput, 'TestTicket')
         await ElementUtil.doSendKeys(CustPortalPageElements.ticketDescInput, 'Test Ticket By WDIO')
         await ElementUtil.doClick(CustPortalPageElements.createBtn)
-
+        await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
     }
 
     async doDeletePatch(patchName) {
         await this.doSearchInPatchesTab(patchName)
         const elements = await CustPortalPageElements.patchNameList;
         const texts = await ElementUtil.getElementText(elements)
-        console.log('the size is '+elements.length)
         if (elements.length !== 0) {
             const deleteIcons = await CustPortalPageElements.patchDeleteIcon
             for (let i = 0; i < texts.length; i++) {
@@ -93,9 +93,10 @@ class CustPortalPage {
                 }
             }
             await ElementUtil.doClick(CustPortalPageElements.deleteConfirmation)
+            await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
         }
         else {
-            console.log(patchName+' patch not found to delete')
+            console.log(patchName + ' patch not found to delete')
         }
     }
 
@@ -194,6 +195,31 @@ class CustPortalPage {
         }
         return flag
     }
-}
 
+    async verifyPatchesDetailsInInfoTab(searchItem) {
+        await this.doSearchInPatchesTab(constData.SeededPatchName)
+        const elements = await CustPortalPageElements.patchNameList;
+        const texts = await ElementUtil.getElementText(elements)
+        for (let i = 0; i < texts.length; i++) {
+            if (texts[i] === searchItem) {
+                await ElementUtil.doClick(CustPortalPageElements.patchInfoIcon[i])
+                break
+            }
+        }
+        assert.equal(await ElementUtil.doGetValue(CustPortalPageElements.seededPatchNameInInfoTab),constData.SeededPatchName)
+        assert.equal(await ElementUtil.doGetValue(CustPortalPageElements.descInInfoTab),constData.PatchDesc)
+        assert.equal(await ElementUtil.doGetValue(CustPortalPageElements.versionInInfoTab),constData.version)
+        assert.equal(await ElementUtil.doGetValue(CustPortalPageElements.artifactoryUrlInInfoTab),constData.ArtifactoryUrl)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.productNameInInfoTab),constData.ProductName)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.baseVersionInInfoTab),constData.BaseVersion)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.solutionCodeInInfoTab),constData.SolutionCode)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.patchTypeInInfoTab),constData.PatchType)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.patchStatusInInfoTab),constData.PatchStatus)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.supercededPatchIdsInInfoTab),constData.SuperSeededPatch)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.prereqSeededPatchIdInInfoTab),constData.PreReqSeededPatch)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.patchCategoryInInfoTab),constData.PatchCategory)
+        assert.equal(await ElementUtil.doGetText(CustPortalPageElements.dependentPatchIdsInInfoTab),constData.DependentPatch)
+        assert.ok(constData.ReleaseBuildNo.includes(await ElementUtil.doGetText(CustPortalPageElements.relBuildNoInInfoTab)))
+    }
+}
 module.exports = new CustPortalPage();

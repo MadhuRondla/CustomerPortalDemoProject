@@ -46,9 +46,25 @@ class CustPortalPageElements{
     get solNameHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-solutionCode")]')}
     get statusHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-patchStatus")]')}
     get actionsHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-actions")]')}
-
     get alertDialog(){return $('//div[@role="alertdialog"]')}
     
+    get patchInfoIcon() {return $$('//button[@title="Info"]')}
+    get seededPatchNameInInfoTab(){return $('//input[@formcontrolname="seededPatchName"]')}
+    get productNameInInfoTab(){return $('//mat-select[@formcontrolname="productId"]/descendant::span[2]')}
+    get baseVersionInInfoTab(){return $('//mat-select[@formcontrolname="baseVersion"]/descendant::span[2]')}
+    get descInInfoTab(){return $('//input[@formcontrolname="description"]')}
+    get solutionCodeInInfoTab(){return $('//mat-select[@formcontrolname="solutionCode"]/descendant::span[2]')}
+    get versionInInfoTab(){return $('//input[@formcontrolname="version"]')}
+    get relBuildNoInInfoTab(){return $('//mat-select[@formcontrolname="releasedBuildNumber"]/descendant::span[2]')}
+    get patchTypeInInfoTab(){return $('//mat-select[@formcontrolname="patchType"]/descendant::span[2]')}
+    get patchStatusInInfoTab(){return $('//mat-select[@formcontrolname="patchStatus"]/descendant::span[2]')}
+    get supercededPatchIdsInInfoTab(){return $('//mat-select[@formcontrolname="supercededPatchIds"]/descendant::span[2]')}
+    get prereqSeededPatchIdInInfoTab(){return $('//mat-select[@formcontrolname="prereqSeededPatchId"]/descendant::span[2]')}
+    get patchCategoryInInfoTab(){return $('//mat-select[@formcontrolname="patchCategory"]/descendant::span[2]')}
+    get dependentPatchIdsInInfoTab(){return $('//mat-select[@formcontrolname="dependentPatchIds"]/descendant::span[2]')}
+    get artifactoryUrlInInfoTab(){return $('//input[@formcontrolname="artifactoryUrl"]')}
+
+
 
 
 //******************Dynamic Locators ************************************************************************* */

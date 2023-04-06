@@ -16,11 +16,6 @@ class AdminPage {
         await expect(adminPageElements.accessProfilesIcon).toBeDisplayed()
         await expect(adminPageElements.teamsIcon).toBeDisplayed()
 
-        // await assert.ok(ElementUtil.doVerifyIsDisplayed(adminPageElements.rolesIcon),'roles Icon is not displayed')
-        // await assert.ok(ElementUtil.doVerifyIsDisplayed(adminPageElements.integrationsIcon),'integrations Icon is not displayed')
-        // await assert.ok(ElementUtil.doVerifyIsDisplayed(adminPageElements.usersIcon),'users Icon is not displayed')
-        // await assert.ok(ElementUtil.doVerifyIsDisplayed(adminPageElements.accessProfilesIcon),'access Profiles Icon is not displayed')
-        // await assert.ok(ElementUtil.doVerifyIsDisplayed(adminPageElements.teamsIcon),'teams Icon is not displayed')
     }
 
 
