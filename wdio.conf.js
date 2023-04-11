@@ -77,10 +77,10 @@ exports.config = {
         browserName: 'chrome',
         'goog:chromeOptions': {
             args: [
-                   '--no-sandbox',
-                   '--disable-infobars',
+                  // '--no-sandbox',
+                  // '--disable-infobars',
                 // '--headless', // This will start Chrome in headless mode
-                   '--disable-gpu'
+                  // '--disable-gpu'
             ],
         },
         acceptInsecureCerts: true
