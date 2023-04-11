@@ -160,9 +160,9 @@ exports.config = {
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec', ['allure',
         {
-            outputDir: 'allure-results',
-            disableWebdriverStepsReporting: true,
-            disableWebdriverScreenshotsReporting: false,
+           // outputDir: 'allure-results',
+           // disableWebdriverStepsReporting: true,
+           // disableWebdriverScreenshotsReporting: false,
         }
     ]
     ],
@@ -190,14 +190,14 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    onPrepare: function (config, capabilities) {
-        const fs = require('fs')
-        let dir = './allure-results'
-        if (fs.existsSync(dir)) {
-            fs.rmSync(dir, { recursive: true })
-            console.log(`${dir} is deleted`)
-        }
-    },
+    // onPrepare: function (config, capabilities) {
+    //     const fs = require('fs')
+    //     let dir = './allure-results'
+    //     if (fs.existsSync(dir)) {
+    //         fs.rmSync(dir, { recursive: true })
+    //         console.log(`${dir} is deleted`)
+    //     }
+    // },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -329,26 +329,26 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    onComplete: function (exitCode, config, capabilities, results) {
-        const reportError = new Error('Could not generate Allure report')
-        const generation = allure(['generate', 'allure-results', '--clean'])
-        return new Promise((resolve, reject) => {
-            const generationTimeout = setTimeout(
-                () => reject(reportError),
-                5000)
+    // onComplete: function (exitCode, config, capabilities, results) {
+    //     const reportError = new Error('Could not generate Allure report')
+    //     const generation = allure(['generate', 'allure-results', '--clean'])
+    //     return new Promise((resolve, reject) => {
+    //         const generationTimeout = setTimeout(
+    //             () => reject(reportError),
+    //             5000)
 
-            generation.on('exit', function (exitCode) {
-                clearTimeout(generationTimeout)
+    //         generation.on('exit', function (exitCode) {
+    //             clearTimeout(generationTimeout)
 
-                if (exitCode !== 0) {
-                    return reject(reportError)
-                }
+    //             if (exitCode !== 0) {
+    //                 return reject(reportError)
+    //             }
 
-                console.log('Allure report successfully generated')
-                resolve()
-            })
-        })
-    },
+    //             console.log('Allure report successfully generated')
+    //             resolve()
+    //         })
+    //     })
+    // },
     /**
     * Gets executed when a refresh happens.
     * @param {String} oldSessionId session ID of the old session
