@@ -4,7 +4,6 @@ const allureReporter = require('@wdio/allure-reporter').default
 const assert = require('assert')
 const constData = require('../data/const')
 
-
 describe('Customer Portal Application', () => {
  
     xit('Create Patch', async () => {
