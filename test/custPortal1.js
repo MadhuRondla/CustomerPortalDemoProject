@@ -6,14 +6,14 @@ const constData = require('../data/const')
 
 describe('Customer Portal Application', () => {
  
-    xit('Create Patch', async () => {
+    it('Create Patch', async () => {
         allureReporter.addSeverity('blocker')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnPatchesTab()
         assert.equal(await CustPortalPage.doCreatePatch(), true)
     })
-    xit('Search Patch', async () => { 
+    it('Search Patch', async () => { 
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
@@ -22,14 +22,14 @@ describe('Customer Portal Application', () => {
     })
 
     
-    xit('Create Ticket', async () => {
+    it('Create Ticket', async () => {
         allureReporter.addSeverity('blocker')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doCreateTicket()
 
     })
-    xit('verify Patches tab table headers', async ()=>{
+    it('verify Patches tab table headers', async ()=>{
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
@@ -46,14 +46,14 @@ describe('Customer Portal Application', () => {
         
     })
 
-    xit('Verify created patch details', async ()=>{
+    it('Verify created patch details', async ()=>{
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnPatchesTab()
         await CustPortalPage.verifyPatchesDetailsInInfoTab(constData.SeededPatchName)
     })
 
-    xit('Delete Patch', async () => {
+    it('Delete Patch', async () => {
         allureReporter.addSeverity('critical')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
