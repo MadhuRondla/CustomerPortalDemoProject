@@ -13,5 +13,5 @@ module.exports={
     "PatchCategory":"platform",
     "DependentPatch":"splashbi_5.4.5.zip",
     "ArtifactoryUrl":"dummy URL",
-    "TicketId":"30016"
+    "TicketId":"300161"
 }
