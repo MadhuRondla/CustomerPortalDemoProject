@@ -1,4 +1,5 @@
 class LoginPageElements{
+
     get inputUsername () {
         return $('#mat-input-0');
     }
@@ -10,5 +11,6 @@ class LoginPageElements{
     get btnSubmit () {
         return $('//span[contains(text(),"SIGN IN")]');
     }
+    get alertDialog(){return $('//div[@role="alertdialog"]')}
 }
 module.exports=new LoginPageElements()

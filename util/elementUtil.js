@@ -12,12 +12,17 @@ class ElementUtil {
   }
 
   async doVerifyIsDisplayed(element) {
-    await element.waitForDisplayed({ timeout: 5000 })
-    let displayed = await element.isDisplayed()
-    return displayed
+    try{
+      await element.waitForDisplayed({ timeout: 5000 })
+      return await element.isDisplayed()
+    }
+    catch(err){
+      return false
+    }
+    
   }
 
-  async getElementText(elements) {
+   async getElementText(elements) {
     return Promise.all(elements.map((el) => el.getText()))
   }
 

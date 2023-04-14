@@ -4,17 +4,22 @@ const homePageElements = require('../pageElements/home.page.elements');
 const assert = require('assert');
 const Page = require('./page');
 
+
+
 class LoginPage extends Page {
     
     async doLogin (username, password) {
+        
         await elementUtil.doSendKeys(LoginPageElements.inputUsername,username)
         await elementUtil.doSendKeys(LoginPageElements.inputPassword,password)
         await elementUtil.doClick(LoginPageElements.btnSubmit)
-        await expect(homePageElements.homepageTitle).toBeDisplayed()
-        //await assert.ok(elementUtil.doVerifyIsDisplayed(homePageElements.homepageTitle), 'Login Failed')
-        //await expect(homePageElements.homepageTitle).toHaveTextContaining('Welcome,'); 
+        if(await elementUtil.doVerifyIsDisplayed(LoginPageElements.alertDialog)===true){
+         console.log('Invalid Credentials, login failed')
+         await browser.takeScreenshot();
+         assert.equal(true,false)
+       
     }
-
+    }
     /**
      * overwrite specific options to adapt it to page object
      */

@@ -22,6 +22,11 @@
     "chromedriver": "^111.0.0",
     "geckodriver": "^3.2.0",
     "wdio-chromedriver-service": "^8.1.1",
+    "wdio-docker-service": "^3.2.1",
     "wdio-geckodriver-service": "^4.1.0"
+  },
+  "dependencies": {
+    "chai": "^4.3.7",
+    "selenium-webdriver": "^4.8.2"
   }
 }

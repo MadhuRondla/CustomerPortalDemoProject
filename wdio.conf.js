@@ -1,7 +1,9 @@
 const LoginPage = require('./pageobjects/login.page')
-const testData = require('./data/config');
+const configData = require('./data/config');
 const allure = require('allure-commandline')
 const allureReporter = require('@wdio/allure-reporter').default
+
+
 
 exports.config = {
     //
@@ -11,6 +13,7 @@ exports.config = {
     // WebdriverIO supports running e2e tests as well as unit and component tests.
     runner: 'local',
     sync: true,
+    
     
     timeouts: {
         pageLoad: 10000,
@@ -34,7 +37,7 @@ exports.config = {
     // will be called from there.
     //
     specs: [
-        //'./test/**/*.js'
+       // './test/**/*.js'
         //'./test/customarPortal.e2e.js',
         './test/custPortal1.js'
     ],
@@ -58,37 +61,45 @@ exports.config = {
     // and 30 processes will get spawned. The property handles how many capabilities
     // from the same test should run tests.
     //
-    maxInstances: 1,
+    maxInstances: 20,
     retry: 3,
     commandRetryCount: 5,
     commandRetryDelay: 100,
+
+    hostname: '192.168.0.198',
+    port: 4444,
+    path: '/wd/hub',
+    
+   
     //
     // If you have trouble getting all important capabilities together, check out the
     // Sauce Labs platform configurator - a great tool to configure your capabilities:
     // https://saucelabs.com/platform/platform-configurator
     //
-    capabilities: [{
+    capabilities: [
+    //     {
 
-        // maxInstances can get overwritten per capability. So if you have an in-house Selenium
-        // grid with only 5 firefox instances available you can make sure that not more than
-        // 5 instances get started at a time.
-        maxInstances: 1,
-        //
-        browserName: 'chrome',
-        'goog:chromeOptions': {
-            args: [
-                   '--no-sandbox',
-                   '--disable-infobars',
-                // '--headless', // This will start Chrome in headless mode
-                   '--disable-gpu'
-            ],
-        },
-        acceptInsecureCerts: true
-        // If outputDir is provided WebdriverIO can capture driver session logs
-        // it is possible to configure which logTypes to include/exclude.
-        // excludeDriverLogs: ['*'], // pass '*' to exclude all driver session logs
-        // excludeDriverLogs: ['bugreport', 'server'],
-    }],
+    //     // maxInstances can get overwritten per capability. So if you have an in-house Selenium
+    //     // grid with only 5 firefox instances available you can make sure that not more than
+    //     // 5 instances get started at a time.
+    //     maxInstances: 2,
+    //     browserName: 'chrome',
+    //     'goog:chromeOptions': {
+    //         args: [
+    //                '--no-sandbox',
+    //                '--disable-infobars',
+    //             // '--headless', // This will start Chrome in headless mode
+    //                '--disable-gpu'
+    //         ],
+    //     },
+    //     acceptInsecureCerts: true
+    // },
+    {
+        browserName:  configData.browser,
+        maxInstances: configData.maxInstances,
+        
+    }
+],
     //
     // ===================
     // Test Configurations
@@ -121,6 +132,9 @@ exports.config = {
     // If your `url` parameter starts without a scheme or `/` (like `some/path`), the base url
     // gets prepended directly.
     baseUrl: 'http://192.168.4.224/login',
+
+    
+    
     //
     // Default timeout for all waitFor* commands.
     waitforTimeout: 10000,
@@ -136,7 +150,7 @@ exports.config = {
     // Services take over a specific job you don't want to take care of. They enhance
     // your test setup with almost no effort. Unlike plugins, they don't add new
     // commands. Instead, they hook themselves up into the test process.
-    services: ['chromedriver','geckodriver'],
+    services: [configData.executionService],
 
     // Framework you want to run your specs with.
     // The following are supported: Mocha, Jasmine, and Cucumber
@@ -159,13 +173,14 @@ exports.config = {
     // The only one supported by default is 'dot'
     // see also: https://webdriver.io/docs/dot-reporter
     reporters: ['spec', 
-    // ['allure',
-    //     {
-    //        // outputDir: 'allure-results',
-    //        // disableWebdriverStepsReporting: true,
-    //        // disableWebdriverScreenshotsReporting: false,
-    //     }
-    // ]
+    ['allure',
+        {
+           outputDir: 'allure-results',
+           disableWebdriverStepsReporting: true,
+           disableWebdriverScreenshotsReporting: false,
+           disableMochaHooks:true,
+        }
+    ],
     ['junit', {
         outputDir: 'junit-reports',
         outputFileFormat: function(options) { // optional
@@ -182,7 +197,7 @@ exports.config = {
     mochaOpts: {
         ui: 'bdd',
         timeout: 99999999,
-        retries:1
+        retries:0
     },
     //
     // =====
@@ -197,14 +212,14 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    // onPrepare: function (config, capabilities) {
-    //     const fs = require('fs')
-    //     let dir = './allure-results'
-    //     if (fs.existsSync(dir)) {
-    //         fs.rmSync(dir, { recursive: true })
-    //         console.log(`${dir} is deleted`)
-    //     }
-    // },
+    onPrepare: (config, capabilities)=> {
+        const fs = require('fs')
+        let dir = './allure-results'
+        if (fs.existsSync(dir)) {
+            fs.rmSync(dir, { recursive: true })
+            console.log(`${dir} is deleted`)
+        }
+    },
     /**
      * Gets executed before a worker process is spawned and can be used to initialise specific service
      * for that worker as well as modify runtime environments in an async fashion.
@@ -242,12 +257,13 @@ exports.config = {
      * @param {Array.<String>} specs        List of spec file paths that are to be run
      * @param {Object}         browser      instance of created browser/device session
      */
-    before: async function (capabilities, specs) {
-        allureReporter.addSeverity('blocker');
-        await LoginPage.open();
-        await browser.maximizeWindow();
-        await LoginPage.doLogin(testData.username, testData.password)
-    },
+//     before: async (capabilities, specs) => {
+    
+//         allureReporter.addSeverity('blocker');
+//         await LoginPage.open();
+//         await browser.maximizeWindow()
+//         await LoginPage.doLogin(configData.username, configData.password)
+//    },
     /**
      * Runs before a WebdriverIO command gets executed.
      * @param {String} commandName hook command name
@@ -265,8 +281,12 @@ exports.config = {
     /**
      * Function to be executed before a test (in Mocha/Jasmine) starts.
      */
-    // beforeTest: function (test, context) {
-    // },
+    //  beforeTest: function (test, context) {
+    //     if (context && context.currentTest && context.currentTest.state === 'failed') {
+    //         console.log('Skipping test: ' + test.title + ' due to failed login');
+    //         this.skip();
+    //       }
+    //  },
     /**
      * Hook that gets executed _before_ a hook within the suite starts (e.g. runs before calling
      * beforeEach in Mocha)
@@ -289,9 +309,12 @@ exports.config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async function (test, context, { error, result, duration, passed, retries }) {
+    afterTest: async (test, context, { error, result, duration, passed, retries }) => {
         if (!passed) {
             await browser.takeScreenshot();
+        }
+        else if(passed){
+            console.log('Test Passed: ' + test.title + ' executed successfully');
         }
     },
 
@@ -336,26 +359,26 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: function (exitCode, config, capabilities, results) {
-    //     const reportError = new Error('Could not generate Allure report')
-    //     const generation = allure(['generate', 'allure-results', '--clean'])
-    //     return new Promise((resolve, reject) => {
-    //         const generationTimeout = setTimeout(
-    //             () => reject(reportError),
-    //             5000)
+    onComplete: (exitCode, config, capabilities, results) => {
+        const reportError = new Error('Could not generate Allure report')
+        const generation = allure(['generate', 'allure-results', '--clean'])
+        return new Promise((resolve, reject) => {
+            const generationTimeout = setTimeout(
+                () => reject(reportError),
+                5000)
 
-    //         generation.on('exit', function (exitCode) {
-    //             clearTimeout(generationTimeout)
+            generation.on('exit', function (exitCode) {
+                clearTimeout(generationTimeout)
 
-    //             if (exitCode !== 0) {
-    //                 return reject(reportError)
-    //             }
+                if (exitCode !== 0) {
+                    return reject(reportError)
+                }
 
-    //             console.log('Allure report successfully generated')
-    //             resolve()
-    //         })
-    //     })
-    // },
+                console.log('Allure report successfully generated')
+                resolve()
+            })
+        })
+    },
     /**
     * Gets executed when a refresh happens.
     * @param {String} oldSessionId session ID of the old session

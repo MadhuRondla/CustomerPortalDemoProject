@@ -7,17 +7,6 @@ const testData = require('../data/config');
 
 describe('Customer Portal Application', () => {
 
-  before(async () => {
-    allureReporter.addSeverity('blocker');
-    await LoginPage.open();
-    await browser.maximizeWindow();
-    if (await LoginPage.doLogin(testData.username, testData.password)) {
-      allureReporter.addStep("Logged in Successfully")
-    } else {
-      allureReporter.addStep("Login Failed! Check credentials")
-    }
-
-  });
   it('Verify devops portal page', async () => {
     await HomePage.doClickOnDevopsPortalLink();
     await DevopsPage.doVerifyDevopsPageTabs();

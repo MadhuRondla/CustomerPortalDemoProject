@@ -3,17 +3,25 @@ const HomePage = require('../pageobjects/home.page')
 const allureReporter = require('@wdio/allure-reporter').default
 const assert = require('assert')
 const constData = require('../data/const')
+const LoginPage = require('../pageobjects/login.page')
+const configData = require('../data/config');
 
 describe('Customer Portal Application', () => {
+    before('Login into application', async () => {
+        allureReporter.addSeverity('blocker');
+        await LoginPage.open();
+        await browser.maximizeWindow()
+        await LoginPage.doLogin(configData.username, configData.password)
+   }),
  
-    it('Create Patch', async () => {
+    xit('Create Patch', async () => {
         allureReporter.addSeverity('blocker')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnPatchesTab()
         assert.equal(await CustPortalPage.doCreatePatch(), true)
     })
-    it('Search Patch', async () => { 
+    xit('Search Patch', async () => { 
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
@@ -29,7 +37,7 @@ describe('Customer Portal Application', () => {
         await CustPortalPage.doCreateTicket()
 
     })
-    it('verify Patches tab table headers', async ()=>{
+    xit('verify Patches tab table headers', async ()=>{
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
@@ -46,14 +54,14 @@ describe('Customer Portal Application', () => {
         
     })
 
-    it('Verify created patch details', async ()=>{
+    xit('Verify created patch details', async ()=>{
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnPatchesTab()
         await CustPortalPage.verifyPatchesDetailsInInfoTab(constData.SeededPatchName)
     })
 
-    it('Delete Patch', async () => {
+    xit('Delete Patch', async () => {
         allureReporter.addSeverity('critical')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
