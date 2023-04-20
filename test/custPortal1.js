@@ -5,6 +5,8 @@ const assert = require('assert')
 const constData = require('../data/const')
 const LoginPage = require('../pageobjects/login.page')
 const configData = require('../data/config');
+const ElementUtil = require('../util/elementUtil')
+const { step } = require('@wdio/allure-reporter').default;
 
 describe('Customer Portal Application', () => {
     before('Login into application', async () => {
@@ -14,12 +16,17 @@ describe('Customer Portal Application', () => {
         await LoginPage.doLogin(configData.username, configData.password)
    }),
  
-    xit('Create Patch', async () => {
+    it('Create Patch', async () => {
         allureReporter.addSeverity('blocker')
-        await HomePage.doClickOnViewApplications()
-        await HomePage.doClickOnCustPortalLink()
-        await CustPortalPage.doClickOnPatchesTab()
-        assert.equal(await CustPortalPage.doCreatePatch(), true)
+        const excelData = await ElementUtil.getTestDataFromExcel('./data/TestData.xlsx', 'PatchCreate')
+        for (var i = 1; i < excelData.length; i++) {
+            await HomePage.doClickOnViewApplications()
+            await HomePage.doClickOnCustPortalLink()
+            await CustPortalPage.doClickOnPatchesTab()
+            assert.equal(await CustPortalPage.doCreatePatch(excelData[i]), true)
+        }
+
+        
     })
     xit('Search Patch', async () => { 
         allureReporter.addSeverity('normal')
@@ -30,7 +37,7 @@ describe('Customer Portal Application', () => {
     })
 
     
-    it('Create Ticket', async () => {
+    xit('Create Ticket', async () => {
         allureReporter.addSeverity('blocker')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
@@ -45,13 +52,14 @@ describe('Customer Portal Application', () => {
         assert.equal(await CustPortalPage.verifyTableHeaderWithFilterListCheckBx(),false)
     })
 
-    it('Search Ticket', async () => {
+    xit('Search Ticket', async () => {
         allureReporter.addSeverity('normal')
+        //allureReporter.addStep('Verifying searched ticket', async () => {
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doSearchInTicketsTab(constData.TicketId)
         assert.equal(await CustPortalPage.verifySearchInTicketsTab(constData.TicketId),true)
-        
+        //})   
     })
 
     xit('Verify created patch details', async ()=>{

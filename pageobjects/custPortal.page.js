@@ -3,6 +3,8 @@ const ElementUtil = require('../util/elementUtil')
 const constData = require('../data/const')
 const assert = require('assert')
 
+
+
 class CustPortalPage {
 
     async doVerifyCustPortalTitle() {
@@ -28,39 +30,40 @@ class CustPortalPage {
         await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
         await ElementUtil.doClick(CustPortalPageElements.productNameOption)
     }
-
-    async doCreatePatch() {
+   
+    async doCreatePatch(excelData) {
+        console.log(excelData)
         await ElementUtil.doClick(CustPortalPageElements.createPatchesIcon)
         await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.productNameOption(constData.ProductName))
-        await ElementUtil.doSendKeys(CustPortalPageElements.seededPatchNameInput, constData.SeededPatchName)
-        await ElementUtil.doSendKeys(CustPortalPageElements.patchDescInput, constData.PatchDesc)
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.productNameOption(excelData[0]))
+        await ElementUtil.doSendKeys(CustPortalPageElements.seededPatchNameInput, excelData[1])
+        await ElementUtil.doSendKeys(CustPortalPageElements.patchDescInput, excelData[2])
         await ElementUtil.doClick(CustPortalPageElements.solutionCodeDrpdown)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.solutionCodeOption(constData.SolutionCode))
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.solutionCodeOption(excelData[3]))
         await ElementUtil.doClick(CustPortalPageElements.patchStatusDrpdown)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.patchStatusOption(constData.PatchStatus))
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.patchStatusOption(excelData[4]))
         await ElementUtil.doClick(CustPortalPageElements.baseVersionDrpdown)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.baseVersionOption(constData.BaseVersion))
-        await ElementUtil.doSendKeys(CustPortalPageElements.versionInput, constData.version)
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.baseVersionOption(excelData[5]))
+        await ElementUtil.doSendKeys(CustPortalPageElements.versionInput, excelData[6])
         await ElementUtil.doClick(CustPortalPageElements.releaseBuildNoDrpdwn)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.releaseBuildNoOption(constData.ReleaseBuildNo))
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.releaseBuildNoOption(excelData[7]))
         await ElementUtil.doClick(CustPortalPageElements.patchTypeDrpdown)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.patchTypeOption(constData.PatchType))
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.patchTypeOption(excelData[8]))
         await ElementUtil.doClick(CustPortalPageElements.includeMysqlChkbox)
         await ElementUtil.doClick(CustPortalPageElements.includeJavaChkbox)
         await ElementUtil.doClick(CustPortalPageElements.includeTomcatChkbox)
         await ElementUtil.doClick(CustPortalPageElements.superSeededPatchDrpdwn)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.superSeededPatchOption(constData.SuperSeededPatch))
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.superSeededPatchOption(excelData[9]))
         await ElementUtil.doClick(CustPortalPageElements.preReqSeededPatchDrpdwn)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.preReqSeededPatchOption(constData.PreReqSeededPatch))
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.preReqSeededPatchOption(excelData[10]))
         await ElementUtil.doClick(CustPortalPageElements.patchCategoryDrpdwn)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.patchCategoryOption(constData.PatchCategory))
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.patchCategoryOption(excelData[11]))
         await ElementUtil.doClick(CustPortalPageElements.dependentPatchDrpdwn)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.dependentPatchOption(constData.DependentPatch))
-        await ElementUtil.doSendKeys(CustPortalPageElements.artifactoryUrlInput, constData.ArtifactoryUrl)
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.dependentPatchOption(excelData[12]))
+        await ElementUtil.doSendKeys(CustPortalPageElements.artifactoryUrlInput, excelData[13])
         await ElementUtil.doClick(CustPortalPageElements.createPatchBtn)
         await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
-        return await this.verifySearchInPatchesTab((constData.SeededPatchName))
+        return await this.verifySearchInPatchesTab((excelData[1]))
 
     }
 
@@ -101,7 +104,7 @@ class CustPortalPage {
     }
 
     async verifySearchInPatchesTab(searchItem) {
-        await this.doSearchInPatchesTab(constData.SeededPatchName)
+        await this.doSearchInPatchesTab(searchItem)
         const elements = await CustPortalPageElements.patchNameList;
         const texts = await ElementUtil.getElementText(elements)
         let flag = false

@@ -1,4 +1,4 @@
-
+const xlsx = require('xlsx');
 class ElementUtil {
 
   async doClick(element) {
@@ -56,6 +56,27 @@ class ElementUtil {
   async doWaitUntillInVisible(element) {
     await element.waitForDisplayed({ timeout: 5000 })
     await element.waitForDisplayed({ timeout: 20000, reverse: true, interval: 1000 })
+  }
+
+  async getTestDataFromExcel(path, sheetName) {
+    
+    const workbook = xlsx.readFile(path)
+    const worksheet = workbook.Sheets[sheetName];
+    const range = xlsx.utils.decode_range(worksheet['!ref']);
+    const data = [];
+    for (let row = range.s.r; row <= range.e.r; row++) {
+      const rowData = [];
+      for (let col = range.s.c; col <= range.e.c; col++) {
+        const cell = worksheet[xlsx.utils.encode_cell({ r: row, c: col })];
+        if (cell) {
+          rowData.push(cell.v);
+        } else {
+          rowData.push('');
+        }
+      }
+      data.push(rowData);
+    }
+    return data
   }
 
 

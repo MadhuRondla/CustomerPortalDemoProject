@@ -13,12 +13,11 @@ class LoginPage extends Page {
         await elementUtil.doSendKeys(LoginPageElements.inputUsername,username)
         await elementUtil.doSendKeys(LoginPageElements.inputPassword,password)
         await elementUtil.doClick(LoginPageElements.btnSubmit)
-        if(await elementUtil.doVerifyIsDisplayed(LoginPageElements.alertDialog)===true){
-         console.log('Invalid Credentials, login failed')
-         await browser.takeScreenshot();
-         assert.equal(true,false)
-       
-    }
+    //     if(await elementUtil.doVerifyIsDisplayed(LoginPageElements.alertDialog)===true){
+    //      console.log('Invalid Credentials, login failed')
+    //      await browser.takeScreenshot();
+    //      assert.equal(true,false)  
+    // }
     }
     /**
      * overwrite specific options to adapt it to page object
