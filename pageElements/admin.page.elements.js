@@ -24,4 +24,6 @@ class AdminPageElements {
     }
 
 
-} module.exports = new AdminPageElements();
+} 
+module.exports = new AdminPageElements();
+//export default new AdminPageElements();

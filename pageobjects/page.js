@@ -9,6 +9,5 @@ module.exports = class Page {
     */
     open () {
         return browser.url('/')
-        //return browser.url(`https://the-internet.herokuapp.com/${path}`)
     }
 }

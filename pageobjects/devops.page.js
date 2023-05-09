@@ -11,4 +11,5 @@ class DevopsPage {
     }
 
 }
+//export default new DevopsPage();
 module.exports = new DevopsPage();

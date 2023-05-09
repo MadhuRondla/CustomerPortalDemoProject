@@ -46,7 +46,7 @@ class CustPortalPageElements{
     get solNameHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-solutionCode")]')}
     get statusHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-patchStatus")]')}
     get actionsHeaderInPatchesTab(){return $('//th[contains(@class,"cdk-column-actions")]')}
-    get alertDialog(){return $('//div[@role="alertdialog"]')}
+    get alertDialog(){return $('//div[@role="alertdialog"]/preceding::div[1]')}
     
     get patchInfoIcon() {return $$('//button[@title="Info"]')}
     get seededPatchNameInInfoTab(){return $('//input[@formcontrolname="seededPatchName"]')}
@@ -63,6 +63,22 @@ class CustPortalPageElements{
     get patchCategoryInInfoTab(){return $('//mat-select[@formcontrolname="patchCategory"]/descendant::span[2]')}
     get dependentPatchIdsInInfoTab(){return $('//mat-select[@formcontrolname="dependentPatchIds"]/descendant::span[2]')}
     get artifactoryUrlInInfoTab(){return $('//input[@formcontrolname="artifactoryUrl"]')}
+
+    get accountsTab(){return $('//span[text()="Accounts"]')}
+    get accountsSearchInput(){return $('//input[@placeholder="Search…"]')}
+    get accountNameList(){return $$('//td[contains(@class,"cdk-column-accountName mat-column-accountName")]/span')}
+    get nextPageIconInAccountsTab(){return $('//button[@aria-label="Next page"]')}
+
+    get accountPatchesTab(){return $('//span[text()="Account Patches"]')}
+    get accountPatchesTabSearchInput(){return $('//input[@placeholder="Search…"]')}
+    get accountNameListInAccountPatchesTab(){return $$('//td[contains(@class,"cdk-column-accountName mat-column-accountName")]/span')}
+    get editIconInAccountPatchesTab(){return $$('//button[@title="Edit"]')}
+    get patchNameListOfAccount(){return $$('//td[contains(@class,"cdk-column-patchName mat-column-patchName")]/span/span')}
+    get ticketNoListOfAccount(){return $$('//td[contains(@class,"cdk-column-ticketId mat-column-ticketId")]/span/span')}
+    get accountNameListInTicketsTab(){return $$('//td[contains(@class,"cdk-column-accountName mat-column-accountName")]/span/span')}
+    get ticketInfoIcon() {return $$('//button[@title="Info"]')}
+    get patchesTabInTicketInfo() {return $('//div[text()="Patches"]')}
+
 
 
 
@@ -143,4 +159,5 @@ class CustPortalPageElements{
     }
 
 }
+//export default new CustPortalPageElements();
 module.exports = new CustPortalPageElements()

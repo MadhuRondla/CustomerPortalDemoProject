@@ -16,5 +16,5 @@ class HomePage {
         await ElementUtil.doClick(homePageElements.viewApplications)
     }
 }
-
+//export default new HomePage();
 module.exports = new HomePage();

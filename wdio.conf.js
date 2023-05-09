@@ -1,7 +1,7 @@
-const LoginPage = require('./pageobjects/login.page')
+
 const configData = require('./data/config');
 const allure = require('allure-commandline')
-const allureReporter = require('@wdio/allure-reporter').default
+//const allureReporter = require('@wdio/allure-reporter').default
 
 
 
@@ -38,8 +38,8 @@ exports.config = {
     //
     specs: [
        // './test/**/*.js'
-        //'./test/customarPortal.e2e.js',
-        './test/custPortal1.js',
+        './test/customarPortal.e2e.js',
+        //'./test/custPortal1.js',
         //'./test/gettingTestData.js'
     ],
     // Patterns to exclude.
@@ -182,13 +182,6 @@ exports.config = {
            disableMochaHooks:true,
         }
     ]
-    // ,
-    // ['junit', {
-    //     outputDir: 'junit-reports',
-    //     outputFileFormat: function(options) { // optional
-    //         return `results-${options.cid}.xml`
-    //     }
-    // }]
     ],
 
 
@@ -198,7 +191,7 @@ exports.config = {
     // See the full list at http://mochajs.org/
     mochaOpts: {
         ui: 'bdd',
-        timeout: 99999999,
+        timeout: 999999999,
         retries:0
     },
     //
@@ -214,7 +207,7 @@ exports.config = {
      * @param {Object} config wdio configuration object
      * @param {Array.<Object>} capabilities list of capabilities details
      */
-    onPrepare: (config, capabilities)=> {
+    onPrepare: ()=> {
         const fs = require('fs')
         let dir = './allure-results'
         if (fs.existsSync(dir)) {
@@ -311,7 +304,7 @@ exports.config = {
      * @param {Boolean} result.passed    true if test has passed, otherwise false
      * @param {Object}  result.retries   informations to spec related retries, e.g. `{ attempts: 0, limit: 0 }`
      */
-    afterTest: async (test, context, { error, result, duration, passed, retries }) => {
+    afterTest: async (test,  {  passed  }) => {
         if (!passed) {
             await browser.takeScreenshot();
         }
@@ -361,26 +354,26 @@ exports.config = {
      * @param {Array.<Object>} capabilities list of capabilities details
      * @param {<Object>} results object containing test results
      */
-    // onComplete: (exitCode, config, capabilities, results) => {
-    //     const reportError = new Error('Could not generate Allure report')
-    //     const generation = allure(['generate', 'allure-results', '--clean'])
-    //     return new Promise((resolve, reject) => {
-    //         const generationTimeout = setTimeout(
-    //             () => reject(reportError),
-    //             5000)
+    onComplete: () => {
+        const reportError = new Error('Could not generate Allure report')
+        const generation = allure(['generate', 'allure-results', '--clean'])
+        return new Promise((resolve, reject) => {
+            const generationTimeout = setTimeout(
+                () => reject(reportError),
+                5000)
 
-    //         generation.on('exit', function (exitCode) {
-    //             clearTimeout(generationTimeout)
+            generation.on('exit', function (exitCode) {
+                clearTimeout(generationTimeout)
 
-    //             if (exitCode !== 0) {
-    //                 return reject(reportError)
-    //             }
+                if (exitCode !== 0) {
+                    return reject(reportError)
+                }
 
-    //             console.log('Allure report successfully generated')
-    //             resolve()
-    //         })
-    //     })
-    // },
+                console.log('Allure report successfully generated')
+                resolve()
+            })
+        })
+    },
     /**
     * Gets executed when a refresh happens.
     * @param {String} oldSessionId session ID of the old session

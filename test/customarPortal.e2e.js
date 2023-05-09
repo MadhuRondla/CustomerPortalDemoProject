@@ -3,14 +3,19 @@ const DevopsPage = require('../pageobjects/devops.page')
 const CustPortalPage = require('../pageobjects/custPortal.page')
 const adminPage = require('../pageobjects/admin.page')
 const LoginPage = require('../pageobjects/login.page')
-const testData = require('../data/config');
+const configData = require('../data/config');
 
 describe('Customer Portal Application', () => {
+  before('Login into application', async () => {
+    //allureReporter.addSeverity('blocker');
+    await LoginPage.open();
+    await browser.maximizeWindow()
+    await LoginPage.doLogin(configData.username, configData.password)
+}),
 
   it('Verify devops portal page', async () => {
     await HomePage.doClickOnDevopsPortalLink();
     await DevopsPage.doVerifyDevopsPageTabs();
-    await browser.pause(5000);
     await HomePage.doClickOnViewApplications();
 
   });
@@ -18,7 +23,6 @@ describe('Customer Portal Application', () => {
   it('Verify cust portal page', async () => {
     await HomePage.doClickOnCustPortalLink();
     await CustPortalPage.doVerifyCustPortalTitle();
-    await browser.pause(5000);
     await HomePage.doClickOnViewApplications();
   });
 
@@ -26,7 +30,6 @@ describe('Customer Portal Application', () => {
     await HomePage.doClickOnAdminLink();
     await adminPage.doVerifyAdminPageTitleIsDisplayed();
     await adminPage.doVerifyAdminPageTabs();
-    await browser.pause(5000);
     await HomePage.doClickOnViewApplications();
   });
 

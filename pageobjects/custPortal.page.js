@@ -5,34 +5,42 @@ const assert = require('assert')
 
 
 
+
+
 class CustPortalPage {
 
     async doVerifyCustPortalTitle() {
-        await expect(CustPortalPageElements.custPortalPageTitle).toBeDisplayed()
+        await expect(CustPortalPageElements.custPortalPageTitle).toBeDisplayed()   
 
     }
     async doClickOnPatchesTab() {
         await ElementUtil.doClick(CustPortalPageElements.patchesTab)
     }
+    async doClickOnAccountsTab() {
+        await ElementUtil.doClick(CustPortalPageElements.accountsTab)
+    }
+    async doClickOnAccountPatchesTab() {
+        await ElementUtil.doClick(CustPortalPageElements.accountPatchesTab)
+    }
     async doSearchInPatchesTab(searchItem) {
-        await browser.pause(3000)
+        //await browser.pause(3000)
         await ElementUtil.doSendKeys(CustPortalPageElements.searchInPatchesTab, searchItem)
+        // eslint-disable-next-line wdio/no-pause
         await browser.pause(3000)
         await browser.keys(['Left arrow']);
+        // eslint-disable-next-line wdio/no-pause
         await browser.pause(3000)
 
     }
     async doClickOnCreatePatchIcon() {
         await ElementUtil.doClick(CustPortalPageElements.createPatchesIcon)
     }
-
     async doSelectProductFromProductNameDrpdown() {
         await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
         await ElementUtil.doClick(CustPortalPageElements.productNameOption)
     }
    
     async doCreatePatch(excelData) {
-        console.log(excelData)
         await ElementUtil.doClick(CustPortalPageElements.createPatchesIcon)
         await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
         await ElementUtil.doScrollDownClick(CustPortalPageElements.productNameOption(excelData[0]))
@@ -62,12 +70,17 @@ class CustPortalPage {
         await ElementUtil.doScrollDownClick(CustPortalPageElements.dependentPatchOption(excelData[12]))
         await ElementUtil.doSendKeys(CustPortalPageElements.artifactoryUrlInput, excelData[13])
         await ElementUtil.doClick(CustPortalPageElements.createPatchBtn)
+        if(await ElementUtil.doGetText(CustPortalPageElements.alertDialog)==='Success'){
         await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
         return await this.verifySearchInPatchesTab((excelData[1]))
-
+        }
+        else{
+            return false                                          
+        }
     }
 
     async doCreateTicket() {
+        // eslint-disable-next-line wdio/no-pause
         await browser.pause(5000)
         await ElementUtil.doClick(CustPortalPageElements.createTicketIcon)
         await ElementUtil.doClick(CustPortalPageElements.accountIdDrpdwn)
@@ -119,7 +132,7 @@ class CustPortalPage {
     }
 
     async verifySuccessMsg() {
-        flag = false;
+        let flag = false;
         const text = CustPortalPageElements.successMsg.getText()
         if (text === "Success") {
             console.log('Created Success fully ' + text);
@@ -129,15 +142,17 @@ class CustPortalPage {
     }
 
     async doSearchInTicketsTab(searchItem) {
-        await browser.pause(5000)
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(3000)
         await ElementUtil.doSendKeys(CustPortalPageElements.searchInPatchesTab, searchItem)
-        await browser.pause(3000)
-        await browser.keys(['Left arrow']);
-        await browser.pause(3000)
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(4000)
+        //await browser.keys(['Left arrow']);
+       // await browser.pause(3000)
 
     }
 
-    async verifySearchInTicketsTab(searchItem) {
+    async verifySearchInTicketsTab1(searchItem) {
         const elements = await CustPortalPageElements.ticketsList;
         const texts = await ElementUtil.getElementText(elements)
         let flag = false
@@ -151,8 +166,10 @@ class CustPortalPage {
         return flag
     }
     async doClickOnFilterlistInPatchesTab() {
+        // eslint-disable-next-line wdio/no-pause
         await browser.pause(2000)
         await ElementUtil.doClick(CustPortalPageElements.filterListIconInPatchesTab)
+        // eslint-disable-next-line wdio/no-pause
         await browser.pause(2000)
     }
 
@@ -224,5 +241,156 @@ class CustPortalPage {
         assert.equal(await ElementUtil.doGetText(CustPortalPageElements.dependentPatchIdsInInfoTab),constData.DependentPatch)
         assert.ok(constData.ReleaseBuildNo.includes(await ElementUtil.doGetText(CustPortalPageElements.relBuildNoInInfoTab)))
     }
+
+    async doSearchInAccountsTab(searchItem) {
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(5000)
+        await ElementUtil.doSendKeys(CustPortalPageElements.accountsSearchInput, searchItem)
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(3000)
+        //await browser.keys(['Left arrow']);
+        //await browser.pause(3000)
+
+    }
+
+    async verifySearchInAccountsTab(searchItem) {
+        const elements = await CustPortalPageElements.accountNameList;
+        const texts = await ElementUtil.getElementText(elements)
+        let flag = false
+        for (let i = 0; i < texts.length; i++) {
+            if (texts[i] === searchItem) {
+                console.log('found the element ' + texts[i]);
+                flag = true
+                break
+            }
+        }
+        return flag
+    }
+    async doClickOnNextPageIconInAccountsTab() {
+        await ElementUtil.doClick(CustPortalPageElements.nextPageIconInAccountsTab)
+        //await browser.pause(5000)
+    }
+
+    async listOutAccountNameInAccountsTab() {
+        //await browser.pause(10000)
+        const myValuesList = [];
+        const texts = await ElementUtil.getElementText(await CustPortalPageElements.accountNameList)
+        myValuesList.push(...texts)
+        if(await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null){
+            do {
+                const texts = await ElementUtil.getElementText(await CustPortalPageElements.accountNameList)
+                myValuesList.push(...texts)
+                await this.doClickOnNextPageIconInAccountsTab()
+            } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+        } 
+        return myValuesList
+    }
+
+    async doSearchInAccountPatchesTab(searchItem) {
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(5000)
+        await ElementUtil.doSendKeys(CustPortalPageElements.accountPatchesTabSearchInput, searchItem)
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(3000)
+        await browser.keys(['Left arrow']);
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(3000)
+    }
+
+    async verifySearchInAccountPatchesTab(searchItem) {
+        const elements = await CustPortalPageElements.accountNameListInAccountPatchesTab;
+        const texts = await ElementUtil.getElementText(elements)
+        let flag = false
+        for (let i = 0; i < texts.length; i++) {
+            if (texts[i] === searchItem) {
+                console.log('found the element ' + texts[i]);
+                flag = true
+                break
+            }
+        }
+        return flag
+    }
+
+    async doClickOnEditIconOfAccountInAccPatchesTab(accountName) {
+        const accNames = await CustPortalPageElements.accountNameListInAccountPatchesTab
+        const editIconList = await CustPortalPageElements.editIconInAccountPatchesTab
+        let i = await ElementUtil.getIndexNumberFromList(accNames, accountName)
+        await ElementUtil.doClick(editIconList[i])
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(5000)
+    }
+
+    async listOutPatchesNameOfAccount() {
+        const myValuesList = [];
+        const texts = await ElementUtil.getAttributeFromList(await CustPortalPageElements.patchNameListOfAccount,'title')
+        myValuesList.push(...texts)
+        if(await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null){
+            do {
+                const texts = await ElementUtil.getAttributeFromList(await CustPortalPageElements.patchNameListOfAccount,'title')
+                myValuesList.push(...texts)
+                await this.doClickOnNextPageIconInAccountsTab()
+            } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+        }
+        return myValuesList
+    }
+
+    async listOutTicketNoOfAccount() {
+        const myValuesList = [];
+        const texts = await ElementUtil.getAttributeFromList(await CustPortalPageElements.ticketNoListOfAccount, 'title')
+        myValuesList.push(...texts);
+        if (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null) {
+            do {
+                await this.doClickOnNextPageIconInAccountsTab()
+                const texts = await ElementUtil.getAttributeFromList(await CustPortalPageElements.ticketNoListOfAccount, 'title')
+                myValuesList.push(...texts);
+            } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+        }
+        return myValuesList
+    }
+
+    async verifySearchInTicketsTab(searchItem) {
+        const elements = await CustPortalPageElements.accountNameListInTicketsTab;
+        const texts = await ElementUtil.getElementsPromiseTextForAttribute(elements,'title')
+        let flag = false
+        for (const value of texts) {
+            if (value === searchItem) {
+                flag = true
+                break
+            }
+        }
+        return flag
+    }
+
+    async doClickOnInfoIconOfTicket(ticketNo){
+        const texts = await ElementUtil.getElementText(await CustPortalPageElements.ticketNoListOfAccount)
+        for (let i = 0; i < texts.length; i++) {
+            if (texts[i] === ticketNo) {
+                await ElementUtil.doClick(CustPortalPageElements.ticketInfoIcon[i])
+                break
+            }
+        }
+    }
+
+    async doClickOnPatchesTabInTicketInfo() {
+        await ElementUtil.doClick(CustPortalPageElements.patchesTabInTicketInfo)
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(5000)
+    }
+
+    async listOutPatchesNameOfTicket() {
+        const myValuesList = [];
+        const texts = await ElementUtil.getElementText(await CustPortalPageElements.patchNameListOfAccount)
+        myValuesList.push(...texts)
+        if(await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null){
+            do {
+                const texts = await ElementUtil.getElementText(await CustPortalPageElements.patchNameListOfAccount)
+                myValuesList.push(...texts)
+                await this.doClickOnNextPageIconInAccountsTab()
+            } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+        }
+        return myValuesList
+    }
+
 }
 module.exports = new CustPortalPage();
+//export default new CustPortalPage();

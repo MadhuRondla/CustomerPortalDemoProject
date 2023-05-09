@@ -15,4 +15,5 @@ class HomePageElements{
         return $('//mat-icon[text()="apps"]');
     }
 }
+//export default new HomePageElements();
 module.exports = new HomePageElements()

@@ -15,4 +15,5 @@ class DevopsPageElements{
         return $('//span[text()="Admin"]');
     }
 }
+//export default new DevopsPageElements();
 module.exports =  new DevopsPageElements()

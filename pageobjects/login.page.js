@@ -1,7 +1,5 @@
 const LoginPageElements = require('../pageElements/login.page.elements')
 const elementUtil = require('../util/elementUtil')
-const homePageElements = require('../pageElements/home.page.elements');
-const assert = require('assert');
 const Page = require('./page');
 
 
@@ -26,5 +24,4 @@ class LoginPage extends Page {
         return super.open();
     }
 }
-
 module.exports = new LoginPage();

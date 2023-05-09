@@ -13,4 +13,5 @@ class LoginPageElements{
     }
     get alertDialog(){return $('//div[@role="alertdialog"]')}
 }
+//export default new LoginPageElements();
 module.exports=new LoginPageElements()
