@@ -4,15 +4,40 @@ const wb = new ExcelJS.Workbook();
 class ElementUtil {
 
   async doClick(element) {
-    await element.waitForDisplayed({ timeout: 5000 })
-    await element.click();
+    try{
+      await element.waitForDisplayed({ timeout: 5000 })
+      if(await element.isClickable()){
+        await element.click();
+      }
+    }
+    catch (err) {
+      console.log(err)
+    } 
   }
 
   async doSendKeys(element, value) {
+    try{
+      await element.waitForDisplayed({ timeout: 5000 })
+      await element.clearValue();
+      await element.setValue(value);
+    }
+    catch(err){
+      console.log(err)
+    }   
+  }
 
-    await element.waitForDisplayed({ timeout: 5000 })
-    await element.clearValue();
-    await element.setValue(value);
+  async doSelectValueFromDropdown(optList, value) {
+    try{
+      for (let index = 0; index < optList.length; index++) {
+        if (await optList[index].getText() === value) {
+            await this.doScrollDownClick(optList[index])
+            break;
+        }
+    }
+    }
+    catch(err){
+      console.log(err)
+    }   
   }
 
   async doVerifyIsDisplayed(element) {
@@ -39,13 +64,6 @@ class ElementUtil {
     browser.keys(['Escape']);
   }
 
-  async simulateClick(element) {
-    await this.trigger(element, 'mousedown');
-    await this.trigger(element, 'click');
-    await this.trigger(element, 'mouseup');
-  }
-  
-
   async doGetValue(element) {
     await element.waitForDisplayed({ timeout: 5000 })
     return element.getValue()
@@ -56,8 +74,12 @@ class ElementUtil {
   }
 
   async doWaitUntillInVisible(element) {
-    await element.waitForDisplayed({ timeout: 5000 })
+    await element.waitForDisplayed({ timeout: 10000 })
     await element.waitForDisplayed({ timeout: 20000, reverse: true, interval: 1000 })
+  }
+
+  async doWaitUntillVisible(element) {
+    await element.waitForDisplayed({ timeout: 20000, interval: 1000 })
   }
 
   async getTestDataFromExcel(path, sheetName) {
@@ -85,8 +107,16 @@ class ElementUtil {
     workbook.xlsx.readFile(excelPath)
       .then(() => {
         const worksheet = workbook.getWorksheet(sheetName);
-        dataToWrite.forEach(item => {
-          worksheet.addRow([item]);
+        worksheet.columns = [
+          { header: 'AccountName', key: 'accName', width: 40 ,bold: true},
+          { header: 'Status', key: 'stat', width: 10, bold: true },
+        ];
+        const fonts = { name: 'Calibri', size: 12, bold: true };
+        worksheet.getCell('A1').font = fonts
+        worksheet.getCell('B1').font = fonts
+
+        dataToWrite.forEach((row) => {
+          worksheet.addRow({ accName: row[0], stat: row[1] });
         });
         return workbook.xlsx.writeFile(excelPath);
       });

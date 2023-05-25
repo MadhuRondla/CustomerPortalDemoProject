@@ -67,6 +67,8 @@ class CustPortalPageElements{
     get accountsTab(){return $('//span[text()="Accounts"]')}
     get accountsSearchInput(){return $('//input[@placeholder="Search…"]')}
     get accountNameList(){return $$('//td[contains(@class,"cdk-column-accountName mat-column-accountName")]/span')}
+    get singleAccountName(){return $('//td[contains(@class,"cdk-column-accountName mat-column-accountName")]/span')}
+    get accountStatus(){return $$('//td[contains(@class,"cdk-column-accountStatus")]/span')}
     get nextPageIconInAccountsTab(){return $('//button[@aria-label="Next page"]')}
 
     get accountPatchesTab(){return $('//span[text()="Account Patches"]')}
@@ -78,6 +80,50 @@ class CustPortalPageElements{
     get accountNameListInTicketsTab(){return $$('//td[contains(@class,"cdk-column-accountName mat-column-accountName")]/span/span')}
     get ticketInfoIcon() {return $$('//button[@title="Info"]')}
     get patchesTabInTicketInfo() {return $('//div[text()="Patches"]')}
+
+    get statusFilterDropdownInTicketsTab(){return $('[id*=mat-select]')}
+    get statusFilterOptions(){return $$('[id*=mat-option] span')}
+    get statusColumnValuesInTicketsTab(){return $$('td[class*=cdk-column-status] span span')}
+    get ticketsTable(){return $('table[class*=cdk-table]')}
+
+    get licensesIconInAccountsTab(){return $('td[class*=cdk-column-licenses] span')}
+    get statusFilterDropdownInLicensesTab(){return $('[id*=mat-select]')}
+    get statusColumnValuesInLicensesTab(){return $$('td[class*=cdk-column-licenseKeyStatus] span span')}
+
+    get createAccountIconInAccountsTab(){return $('button[title="Create Account"]')}
+//**************Account Create Elements*******************************************************************************************
+    get accountNameInputInAccountCreateTab(){return $('input[formcontrolname="accountName"]')}
+    get addressInputInAccountCreateTab(){return $('[formcontrolname="addressLine"]')}
+    get countryInputInAccountCreateTab(){return $('input[formcontrolname="country"]')}
+    get stateInputInAccountCreateTab(){return $('[formcontrolname="state"]')}
+    get cityInputInAccountCreateTab(){return $('[formcontrolname="city"]')}
+    get postalCodeInputInAccountCreateTab(){return $('[formcontrolname="postalCode"]')}
+    get numberOfUsersInputInAccountCreateTab(){return $('input[formcontrolname="noOfUsers"]')}
+    get supportLevelDrpdownInAccountCreateTab(){return $('[formcontrolname="supportLevel"]')}
+    get designationDrpdownInAccountCreateTab(){return $('[formcontrolname="designation"]')}
+    get accountTypeDrpdownInAccountCreateTab(){return $('[formcontrolname="accountType"]')}
+    get accountStatusDrpdownInAccountCreateTab(){return $('[formcontrolname="accountStatus"]')}
+    get partnerAccountIdDrpdownInAccountCreateTab(){return $('[formcontrolname="partnerAccountId"]')}
+    get newPartnerIdDrpdownInAccountCreateTab(){return $('[formcontrolname="newPartnerId"]')}
+    get csrDrpdownInAccountCreateTab(){return $('[formcontrolname="csr"]')}
+    get accountCodeDrpdownInAccountCreateTab(){return $('[formcontrolname="accountCode"]')}
+    get industryDrpdownInAccountCreateTab(){return $('[formcontrolname="industry"]')}
+    get salesPersonDrpdownInAccountCreateTab(){return $('[formcontrolname="salesPerson"]')}
+
+    get attribute1InputInAccountCreateTab(){return $('[formcontrolname="attribute1"]')}
+    get attribute2InputInAccountCreateTab(){return $('[formcontrolname="attribute2"]')}
+    get attribute3InputInAccountCreateTab(){return $('[formcontrolname="attribute3"]')}
+
+    get billingCommentsInputInAccountCreateTab(){return $('[formcontrolname="billingComments"]')}
+
+    get createBtnInAccountCreateTab(){return $('//span[text()="CREATE"]')}
+
+
+
+
+
+
+
 
 
 
@@ -159,5 +205,4 @@ class CustPortalPageElements{
     }
 
 }
-//export default new CustPortalPageElements();
 module.exports = new CustPortalPageElements()

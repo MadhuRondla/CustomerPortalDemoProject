@@ -38,8 +38,8 @@ exports.config = {
     //
     specs: [
        // './test/**/*.js'
-        './test/customarPortal.e2e.js',
-        //'./test/custPortal1.js',
+        //'./test/customarPortal.e2e.js',
+        './test/custPortal1.js',
         //'./test/gettingTestData.js'
     ],
     // Patterns to exclude.

@@ -2,6 +2,7 @@ const CustPortalPageElements = require('../pageElements/custportal.page.elements
 const ElementUtil = require('../util/elementUtil')
 const constData = require('../data/const')
 const assert = require('assert')
+const HomePage = require('../pageobjects/home.page')
 
 
 
@@ -39,11 +40,17 @@ class CustPortalPage {
         await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
         await ElementUtil.doClick(CustPortalPageElements.productNameOption)
     }
+    async doSelectProductNameInPatchCreatePage(prodName){
+        await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
+        //const optList = await CustPortalPageElements.statusFilterOptions
+        //await ElementUtil.doSelectValueFromDropdown(optList, prodName)
+        await ElementUtil.doScrollDownClick(CustPortalPageElements.productNameOption(prodName))
+    }
    
     async doCreatePatch(excelData) {
         await ElementUtil.doClick(CustPortalPageElements.createPatchesIcon)
-        await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
-        await ElementUtil.doScrollDownClick(CustPortalPageElements.productNameOption(excelData[0]))
+
+        await this.doSelectProductNameInPatchCreatePage(excelData[0])
         await ElementUtil.doSendKeys(CustPortalPageElements.seededPatchNameInput, excelData[1])
         await ElementUtil.doSendKeys(CustPortalPageElements.patchDescInput, excelData[2])
         await ElementUtil.doClick(CustPortalPageElements.solutionCodeDrpdown)
@@ -71,7 +78,7 @@ class CustPortalPage {
         await ElementUtil.doSendKeys(CustPortalPageElements.artifactoryUrlInput, excelData[13])
         await ElementUtil.doClick(CustPortalPageElements.createPatchBtn)
         if(await ElementUtil.doGetText(CustPortalPageElements.alertDialog)==='Success'){
-        await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
+            await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
         return await this.verifySearchInPatchesTab((excelData[1]))
         }
         else{
@@ -80,8 +87,6 @@ class CustPortalPage {
     }
 
     async doCreateTicket() {
-        // eslint-disable-next-line wdio/no-pause
-        await browser.pause(5000)
         await ElementUtil.doClick(CustPortalPageElements.createTicketIcon)
         await ElementUtil.doClick(CustPortalPageElements.accountIdDrpdwn)
         await ElementUtil.doScrollDownClick(CustPortalPageElements.accountIdOption('ADP'))
@@ -147,7 +152,7 @@ class CustPortalPage {
         await ElementUtil.doSendKeys(CustPortalPageElements.searchInPatchesTab, searchItem)
         // eslint-disable-next-line wdio/no-pause
         await browser.pause(4000)
-        //await browser.keys(['Left arrow']);
+        await browser.keys(['Left arrow']);
        // await browser.pause(3000)
 
     }
@@ -243,13 +248,13 @@ class CustPortalPage {
     }
 
     async doSearchInAccountsTab(searchItem) {
-        // eslint-disable-next-line wdio/no-pause
-        await browser.pause(5000)
+        await ElementUtil.doWaitUntillVisible(CustPortalPageElements.ticketsTable)
         await ElementUtil.doSendKeys(CustPortalPageElements.accountsSearchInput, searchItem)
         // eslint-disable-next-line wdio/no-pause
         await browser.pause(3000)
-        //await browser.keys(['Left arrow']);
-        //await browser.pause(3000)
+        await browser.keys(['Left arrow']);
+        // eslint-disable-next-line wdio/no-pause
+        await browser.pause(3000)
 
     }
 
@@ -259,7 +264,6 @@ class CustPortalPage {
         let flag = false
         for (let i = 0; i < texts.length; i++) {
             if (texts[i] === searchItem) {
-                console.log('found the element ' + texts[i]);
                 flag = true
                 break
             }
@@ -267,28 +271,58 @@ class CustPortalPage {
         return flag
     }
     async doClickOnNextPageIconInAccountsTab() {
-        await ElementUtil.doClick(CustPortalPageElements.nextPageIconInAccountsTab)
-        //await browser.pause(5000)
+        await ElementUtil.doClick(CustPortalPageElements.nextPageIconInAccountsTab)   
+    }
+
+    async doClickOnLicensesIconInAccountsTab() {
+        await ElementUtil.doClick(CustPortalPageElements.licensesIconInAccountsTab)    
     }
 
     async listOutAccountNameInAccountsTab() {
-        //await browser.pause(10000)
+        await ElementUtil.doWaitUntillVisible(await CustPortalPageElements.singleAccountName)
         const myValuesList = [];
         const texts = await ElementUtil.getElementText(await CustPortalPageElements.accountNameList)
         myValuesList.push(...texts)
         if(await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null){
             do {
+                await this.doClickOnNextPageIconInAccountsTab()
+                // eslint-disable-next-line wdio/no-pause
+                //await browser.pause(2000)
                 const texts = await ElementUtil.getElementText(await CustPortalPageElements.accountNameList)
                 myValuesList.push(...texts)
-                await this.doClickOnNextPageIconInAccountsTab()
             } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
         } 
         return myValuesList
     }
 
+    async listOutAccountNameInAccountsTab1() {
+
+        await ElementUtil.doWaitUntillVisible(await CustPortalPageElements.singleAccountName)
+        const myValuesList = [];
+        const myValuesList1 = [];
+        const texts = await ElementUtil.getElementText(await CustPortalPageElements.accountNameList)
+        const status = await ElementUtil.getElementText(await CustPortalPageElements.accountStatus)
+        
+         myValuesList.push(...texts)
+         myValuesList1.push(...status)
+         if (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null) {
+            do {
+               await this.doClickOnNextPageIconInAccountsTab()
+               const texts = await ElementUtil.getElementText(await CustPortalPageElements.accountNameList)
+               const status = await ElementUtil.getElementText(await CustPortalPageElements.accountStatus)
+                myValuesList.push(...texts)
+                myValuesList1.push(...status)    
+            } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+         }
+         let combinedList = myValuesList.map((item, index) => {
+            return [item, myValuesList1[index]];
+          });
+
+    return combinedList
+}
+
     async doSearchInAccountPatchesTab(searchItem) {
-        // eslint-disable-next-line wdio/no-pause
-        await browser.pause(5000)
+        await ElementUtil.doWaitUntillVisible(CustPortalPageElements.ticketsTable)
         await ElementUtil.doSendKeys(CustPortalPageElements.accountPatchesTabSearchInput, searchItem)
         // eslint-disable-next-line wdio/no-pause
         await browser.pause(3000)
@@ -303,7 +337,6 @@ class CustPortalPage {
         let flag = false
         for (let i = 0; i < texts.length; i++) {
             if (texts[i] === searchItem) {
-                console.log('found the element ' + texts[i]);
                 flag = true
                 break
             }
@@ -348,17 +381,33 @@ class CustPortalPage {
         return myValuesList
     }
 
-    async verifySearchInTicketsTab(searchItem) {
+    async verifySearchInTicketsTab(searchItem,searchGrp) {
+        
+        if(searchGrp==="Ticket"){
+            const elements = await CustPortalPageElements.ticketNoListOfAccount;
+            const texts = await ElementUtil.getElementText(elements)
+            let flag = false
+            for (const value of texts) {
+                if (value == searchItem) {
+                    flag = true
+                    break
+                }
+            }
+            return flag
+        }
+        else{
         const elements = await CustPortalPageElements.accountNameListInTicketsTab;
         const texts = await ElementUtil.getElementsPromiseTextForAttribute(elements,'title')
         let flag = false
         for (const value of texts) {
-            if (value === searchItem) {
+            console.log("hhhhhh "+value)
+            if (value == searchItem) {
                 flag = true
                 break
             }
         }
         return flag
+    }
     }
 
     async doClickOnInfoIconOfTicket(ticketNo){
@@ -391,6 +440,214 @@ class CustPortalPage {
         return myValuesList
     }
 
+    async doSelectStatusOptionFromStatusDrpdwnInTicketsTab(status) {
+        await ElementUtil.doWaitUntillVisible(CustPortalPageElements.ticketsTable)
+        await ElementUtil.doClick(CustPortalPageElements.statusFilterDropdownInTicketsTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        for (let index = 0; index < optList.length; index++) {
+            if (await optList[index].getText() === status) {
+                await ElementUtil.doScrollDownClick(optList[index])
+                break;
+            }
+        }
+        await ElementUtil.doWaitUntillVisible(CustPortalPageElements.ticketsTable)
+
+    }
+
+    async doVerifyStatusOfTicketsAfterApplyingFilterInTicketsTab(stat) {
+        let flag=true;
+        const myValuesList = [];
+        const texts = await ElementUtil.getElementText(await CustPortalPageElements.statusColumnValuesInTicketsTab)
+        myValuesList.push(...texts)
+        if(await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null){
+            do {
+                await this.doClickOnNextPageIconInAccountsTab()
+                const texts = await ElementUtil.getElementText(await CustPortalPageElements.statusColumnValuesInTicketsTab)
+                myValuesList.push(...texts)  
+            } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+        }
+        for(let val of myValuesList){
+            if(val !== stat){
+               flag=false
+               break;
+            }
+        }
+        return flag
+    }
+
+    async doSelectStatusOptionFromStatusDrpdwnInLisensesTab(status) {
+        await ElementUtil.doWaitUntillVisible(CustPortalPageElements.ticketsTable)
+        await ElementUtil.doClick(CustPortalPageElements.statusFilterDropdownInLicensesTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        for (let index = 0; index < optList.length; index++) {
+            if (await optList[index].getText() === status) {
+                await ElementUtil.doScrollDownClick(optList[index])
+                break;
+            }
+        }
+    }
+
+    async doVerifyStatusOfLicenseAfterApplyingFilterInLicensesTab(stat) {
+        let flag=true;
+        const myValuesList = [];
+        const texts = await ElementUtil.getElementText(await CustPortalPageElements.statusColumnValuesInLicensesTab)
+        myValuesList.push(...texts)
+        if(await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null){
+            do {
+                await this.doClickOnNextPageIconInAccountsTab()
+                const texts = await ElementUtil.getElementText(await CustPortalPageElements.statusColumnValuesInLicensesTab)
+                myValuesList.push(...texts)  
+            } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+        }
+        for(let val of myValuesList){
+            if(val !== stat){
+               flag=false
+               break;
+            }
+        }
+        return flag
+    }
+
+    async doClickOnCreateAccountIcon() {
+        await ElementUtil.doClick(CustPortalPageElements.createAccountIconInAccountsTab)   
+    }
+
+    async doEnterAccountNameInAccountNameInput(accName) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.accountNameInputInAccountCreateTab,accName)   
+    }
+
+    async doEnterAddressInAddressInput(address) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.addressInputInAccountCreateTab,address)   
+    }
+
+    async doEnterCountryInCountryInput(country) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.countryInputInAccountCreateTab,country)   
+    }
+
+    async doEnterStateInStateInput(state) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.stateInputInAccountCreateTab,state)   
+    }
+
+    async doEnterCityInCityInput(city) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.cityInputInAccountCreateTab,city)   
+    }
+
+    async doEnterPostalCodeInPostalCodeInput(postalCode) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.postalCodeInputInAccountCreateTab,postalCode)   
+    }
+
+    async doEnterNumberOfUsersInNoOfUsersInput(noOfUsers) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.numberOfUsersInputInAccountCreateTab,noOfUsers)   
+    }
+
+    async doSelectSupportLevelOptionAccountCreateTab(supportLevel) {
+        await ElementUtil.doClick(CustPortalPageElements.supportLevelDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, supportLevel)
+    }
+    async doSelectDesignationOptionInAccountCreateTab(designation) {
+        await ElementUtil.doClick(CustPortalPageElements.designationDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, designation)
+    }
+
+    async doSelectAccountTypeOptionInAccountCreateTab(accountType) {
+        await ElementUtil.doClick(CustPortalPageElements.accountTypeDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, accountType)
+    }
+
+    async doSelectAccountStatusOptionInAccountCreateTab(accountStatus) {
+        await ElementUtil.doClick(CustPortalPageElements.accountStatusDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, accountStatus)
+    }
+    async doSelectParentAccountOptionInAccountCreateTab(parentAccount) {
+        await ElementUtil.doClick(CustPortalPageElements.partnerAccountIdDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, parentAccount)
+    }
+    async doSelectPartnerAccountOptionInAccountCreateTab(partnerAccount) {
+        await ElementUtil.doClick(CustPortalPageElements.newPartnerIdDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, partnerAccount)
+    }
+    async doSelectCSROptionInAccountCreateTab(csr) {
+        await ElementUtil.doClick(CustPortalPageElements.csrDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, csr)
+    }
+    async doEnterAccountCodeInputInAccountCreateTab(accountCode) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.accountCodeDrpdownInAccountCreateTab,accountCode)    
+    }
+    async doEnterIndustryInputInAccountCreateTab(industry) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.industryDrpdownInAccountCreateTab,industry)    
+    }
+    async doSelectSalesPersonOptionInAccountCreateTab(salesPerson) {
+        await ElementUtil.doClick(CustPortalPageElements.salesPersonDrpdownInAccountCreateTab)
+        const optList = await CustPortalPageElements.statusFilterOptions
+        await ElementUtil.doSelectValueFromDropdown(optList, salesPerson)
+    }
+
+    async doEnterBillingCommentsInBillingCommentsInput(billingComments) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.billingCommentsInputInAccountCreateTab,billingComments) 
+         // eslint-disable-next-line wdio/no-pause
+         await browser.pause(1000)  
+    }
+
+    async doEnterAttribute1InAttribute1Input(attribute1) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.attribute1InputInAccountCreateTab,attribute1)   
+    }
+    async doEnterAttribute2InAttribute2Input(attribute2) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.attribute2InputInAccountCreateTab,attribute2)   
+    }
+    async doEnterAttribute3InAttribute3Input(attribute3) {
+        await ElementUtil.doSendKeys(CustPortalPageElements.attribute3InputInAccountCreateTab,attribute3) 
+    }
+
+    async doClickOnCreateBtnInAccountCreateTab() {
+        await ElementUtil.doClick(CustPortalPageElements.createBtnInAccountCreateTab)   
+    }
+
+    async createAccount(excelData) {
+        await this.doEnterAccountNameInAccountNameInput(excelData[0])
+        await this.doEnterAddressInAddressInput(excelData[1])
+        await this.doEnterCountryInCountryInput(excelData[2])
+        await this.doEnterStateInStateInput(excelData[3])
+        await this.doEnterCityInCityInput(excelData[4])
+        await this.doEnterPostalCodeInPostalCodeInput(excelData[5])
+        await this.doEnterNumberOfUsersInNoOfUsersInput(excelData[6])
+        await this.doSelectSupportLevelOptionAccountCreateTab(excelData[7])
+        await this.doSelectDesignationOptionInAccountCreateTab(excelData[8])
+        await this.doSelectAccountTypeOptionInAccountCreateTab(excelData[9])
+        await this.doSelectAccountStatusOptionInAccountCreateTab(excelData[10])
+        await this.doSelectParentAccountOptionInAccountCreateTab(excelData[11])
+        await this.doSelectPartnerAccountOptionInAccountCreateTab(excelData[12])
+        await this.doSelectCSROptionInAccountCreateTab(excelData[13])
+        await this.doEnterAccountCodeInputInAccountCreateTab(excelData[14])
+        await this.doEnterIndustryInputInAccountCreateTab(excelData[15])
+        await this.doSelectSalesPersonOptionInAccountCreateTab(excelData[16])
+        await this.doEnterBillingCommentsInBillingCommentsInput(excelData[17])
+        await this.doEnterAttribute1InAttribute1Input(excelData[18])
+        await this.doEnterAttribute2InAttribute2Input(excelData[19])
+        await this.doEnterAttribute3InAttribute3Input(excelData[20])
+        await this.doClickOnCreateBtnInAccountCreateTab()
+        if (await ElementUtil.doGetText(CustPortalPageElements.alertDialog) === 'Success') {
+            await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
+            await HomePage.doClickOnViewApplications()
+            await HomePage.doClickOnCustPortalLink()
+            await this.doClickOnAccountsTab()
+            await this.doSearchInAccountsTab(excelData[0])
+            return await this.verifySearchInAccountsTab(excelData[0])
+        }
+        else {
+            
+            return false
+        }
+    }
+
+
+
+
 }
 module.exports = new CustPortalPage();
-//export default new CustPortalPage();
