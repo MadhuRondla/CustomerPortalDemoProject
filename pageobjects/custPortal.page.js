@@ -148,10 +148,10 @@ class CustPortalPage {
 
     async doSearchInTicketsTab(searchItem) {
         // eslint-disable-next-line wdio/no-pause
-        await browser.pause(3000)
+        await browser.pause(2000)
         await ElementUtil.doSendKeys(CustPortalPageElements.searchInPatchesTab, searchItem)
         // eslint-disable-next-line wdio/no-pause
-        await browser.pause(4000)
+        await browser.pause(1000)
         await browser.keys(['Left arrow']);
        // await browser.pause(3000)
 
@@ -400,7 +400,6 @@ class CustPortalPage {
         const texts = await ElementUtil.getElementsPromiseTextForAttribute(elements,'title')
         let flag = false
         for (const value of texts) {
-            console.log("hhhhhh "+value)
             if (value == searchItem) {
                 flag = true
                 break
