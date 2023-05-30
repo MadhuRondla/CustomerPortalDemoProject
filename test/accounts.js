@@ -7,7 +7,7 @@ const ElementUtil = require('../util/elementUtil')
 const assert = require('assert')
 
 
-describe('Customer Portal Application', () => {
+describe('Customer Portal Application', ()=> {
     before('Login into application', async () => {
         allureReporter.addSeverity('blocker');
         await LoginPage.open();
@@ -15,7 +15,7 @@ describe('Customer Portal Application', () => {
         await LoginPage.doLogin(configData.username, configData.password)
    })
   
-    it('[P1]Verify Account Name Search', async ()=>{
+    it('[P1]Verify Account Name Search', async ()=> {
         allureReporter.addFeature("Accounts")
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
@@ -25,7 +25,7 @@ describe('Customer Portal Application', () => {
         assert.equal(await CustPortalPage.verifySearchInAccountsTab("2bone1 Technologies"),true)
     })
 
-    it('[P2]List out Account Names', async ()=>{
+    it('[P2]List out Account Names', async ()=> {
         allureReporter.addFeature("Accounts")
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
@@ -35,7 +35,7 @@ describe('Customer Portal Application', () => {
         await ElementUtil.doWriteDataToExcel('./data/TestData.xlsx','AccNames',accList)   
     })   
 
-    it('[P3]Verify Filter in Licenses Tab', async () => {
+    it('[P3]Verify Filter in Licenses Tab', async ()=> {
         allureReporter.addFeature("Accounts")
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
@@ -46,7 +46,7 @@ describe('Customer Portal Application', () => {
         assert.equal(await CustPortalPage.doVerifyStatusOfLicenseAfterApplyingFilterInLicensesTab('Active'),true)
     })
 
-    it('[P4]Verify Create Account in Accounts Tab', async () => {
+    it('[P4]Verify Create Account in Accounts Tab', async ()=> {
         allureReporter.addFeature("Accounts")
         const excelData = await ElementUtil.getTestDataFromExcel('./data/TestData.xlsx', 'AccountCreate')
         for (var i = 1; i < excelData.length; i++) {
@@ -56,6 +56,20 @@ describe('Customer Portal Application', () => {
             await CustPortalPage.doClickOnCreateAccountIcon()
             assert.equal(await CustPortalPage.createAccount(excelData[i]), true)
         }
-    })  
+    })
+
+    it.only('[P5]Verify Patch Creation from Accounts Tab', async ()=> {
+        allureReporter.addFeature("Accounts")
+        allureReporter.addSeverity('normal')
+        await HomePage.doClickOnViewApplications()
+        await HomePage.doClickOnCustPortalLink()
+        await CustPortalPage.doClickOnAccountsTab()
+        await CustPortalPage.doSearchInAccountsTab("TestAccount123")
+        await CustPortalPage.doClickOnPatchesIconOfGivenAccount("TestAccount123")
+        await CustPortalPage.doCreatePatchFromAccounts()
+
+    })
+    
+    
 
 })

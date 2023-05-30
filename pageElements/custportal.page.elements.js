@@ -120,7 +120,21 @@ class CustPortalPageElements{
 
 
 
+    get patchesIconInAccountsTab(){return $$('td[class*=cdk-column-patches] span span')}
+    get creatPatchIconInAccountPatches(){return $('button[title="Create Patch"]')}
+    get patchNameInputInAccountPatchCreationTab(){return $('input[formcontrolname="patchName"]')}
+    get preReqPatchDrpdwnInAccPatchCreationTab(){return $('[formcontrolname="prereqPatchId"]')}
+    get displayDrpdwnInAccPatchCreationTab(){return $('[formcontrolname="displayFlag"]')}
+    get ticketNoInputInAccountPatchCreationTab(){return $('input[formcontrolname="ticketNumber"]')}
+    get prodChkboxInAccPatchCreationTab(){return $('[formcontrolname="isInstalledOnProd"] div')}
+    get testChkboxInAccPatchCreationTab(){return $('[formcontrolname="isInstalledOnTest"] div')}
+    get devChkboxInAccPatchCreationTab(){return $('[formcontrolname="isInstalledOnDev"] div')}
+    get includeInArtifactDrpdwnInAccPatchCreationTab(){return $('[formcontrolname="includeInArtifactory"]')}
+    get includeInReplicationDrpdwnInAccPatchCreationTab(){return $('[formcontrolname="includeInReplication"]')}
 
+
+
+    get saveBtnInAccountPatchCreationTab(){return $('//span[text()="SAVE"]')}
 
 
 

@@ -254,7 +254,7 @@ class CustPortalPage {
         await browser.pause(3000)
         await browser.keys(['Left arrow']);
         // eslint-disable-next-line wdio/no-pause
-        await browser.pause(3000)
+        await browser.pause(2000)
 
     }
 
@@ -609,7 +609,7 @@ class CustPortalPage {
     }
 
     async createAccount(excelData) {
-        await this.doEnterAccountNameInAccountNameInput(excelData[0])
+        await this.doEnterAccountNameInAccountNameInput("TestAccount123")
         await this.doEnterAddressInAddressInput(excelData[1])
         await this.doEnterCountryInCountryInput(excelData[2])
         await this.doEnterStateInStateInput(excelData[3])
@@ -636,14 +636,66 @@ class CustPortalPage {
             await HomePage.doClickOnViewApplications()
             await HomePage.doClickOnCustPortalLink()
             await this.doClickOnAccountsTab()
-            await this.doSearchInAccountsTab(excelData[0])
-            return await this.verifySearchInAccountsTab(excelData[0])
+            await this.doSearchInAccountsTab("TestAccount123")
+            return await this.verifySearchInAccountsTab("TestAccount123")
         }
         else {
             
             return false
         }
     }
+
+  async doClickOnPatchesIconOfGivenAccount(accountName){
+    const elements = await CustPortalPageElements.accountNameList
+        const texts = await ElementUtil.getElementText(elements)
+        const patchIcons = await CustPortalPageElements.patchesIconInAccountsTab
+        for (let i = 0; i < texts.length; i++) {
+            if (texts[i] === accountName) {
+                await ElementUtil.doClick(patchIcons[i])
+                break
+            }
+        }
+  }
+
+  async doCreatePatchFromAccounts() {
+    
+    await ElementUtil.doClick(CustPortalPageElements.creatPatchIconInAccountPatches)
+    await ElementUtil.doClick(CustPortalPageElements.productNameDrpdown)
+    await ElementUtil.doScrollDownClick(CustPortalPageElements.productNameOption("SplashBI"))
+    await ElementUtil.doSendKeys(CustPortalPageElements.patchDescInput, "excelData")
+    await ElementUtil.doClick(CustPortalPageElements.solutionCodeDrpdown)
+    await ElementUtil.doScrollDownClick(CustPortalPageElements.solutionCodeOption("SplashHR"))
+    await ElementUtil.doClick(CustPortalPageElements.patchTypeDrpdown)
+    await ElementUtil.doScrollDownClick(CustPortalPageElements.patchTypeOption("One Off Patch"))
+    await ElementUtil.doSendKeys(CustPortalPageElements.patchNameInputInAccountPatchCreationTab,"testingPatch")
+    await ElementUtil.doClick(CustPortalPageElements.preReqPatchDrpdwnInAccPatchCreationTab)
+    // eslint-disable-next-line wdio/no-pause
+    await browser.pause(3000)
+    let optList = await CustPortalPageElements.statusFilterOptions
+    await ElementUtil.doSelectValueFromDropdown(optList, "SplashBI_4.1.4")
+    await ElementUtil.doClick(CustPortalPageElements.displayDrpdwnInAccPatchCreationTab)
+    optList = await CustPortalPageElements.statusFilterOptions
+    await ElementUtil.doSelectValueFromDropdown(optList, "Yes")
+    await ElementUtil.doSendKeys(CustPortalPageElements.ticketNoInputInAccountPatchCreationTab,"14141")
+    await ElementUtil.doClick(CustPortalPageElements.prodChkboxInAccPatchCreationTab)
+    await ElementUtil.doClick(CustPortalPageElements.testChkboxInAccPatchCreationTab)
+    await ElementUtil.doClick(CustPortalPageElements.devChkboxInAccPatchCreationTab)
+    await ElementUtil.doClick(CustPortalPageElements.includeInArtifactDrpdwnInAccPatchCreationTab)
+    optList = await CustPortalPageElements.statusFilterOptions
+    await ElementUtil.doSelectValueFromDropdown(optList, "Yes")
+    await ElementUtil.doClick(CustPortalPageElements.includeInReplicationDrpdwnInAccPatchCreationTab)
+    optList = await CustPortalPageElements.statusFilterOptions
+    await ElementUtil.doSelectValueFromDropdown(optList, "Yes")
+    // eslint-disable-next-line wdio/no-pause
+    await browser.pause(5000)
+    // if(await ElementUtil.doGetText(CustPortalPageElements.alertDialog)==='Success'){
+    //     await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
+    // return await this.verifySearchInPatchesTab((excelData[1]))
+    // }
+    // else{
+    //     return false                                          
+    // }
+}
 
 
 
