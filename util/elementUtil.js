@@ -1,3 +1,4 @@
+import path from 'node:path'
 const xlsx = require('xlsx');
 const ExcelJS = require('exceljs');
 const wb = new ExcelJS.Workbook();
@@ -11,7 +12,8 @@ class ElementUtil {
       }
     }
     catch (err) {
-      console.log(err)
+      throw new Error(err);
+      
     } 
   }
 
@@ -22,7 +24,7 @@ class ElementUtil {
       await element.setValue(value);
     }
     catch(err){
-      console.log(err)
+      throw new Error(err);
     }   
   }
 
@@ -36,7 +38,7 @@ class ElementUtil {
     }
     }
     catch(err){
-      console.log(err)
+      throw new Error(err);
     }   
   }
 
@@ -46,7 +48,7 @@ class ElementUtil {
       return await element.isDisplayed()
     }
     catch (err) {
-      return false
+      throw new Error(err);
     }
 
   }
@@ -206,6 +208,25 @@ class ElementUtil {
     // console.log(`There are ${ws.actualRowCount} rows`)
     console.log(`There are ${ws.columnCount} columns`);
     console.log(`There are ${ws.rowCount} rows`)   
+  }
+
+  async doUploadFileWithInvisibleInput(element, fPath) {
+    try {
+      const filePath = path.join(__dirname, fPath);
+      const remoteFilePath = await browser.uploadFile(filePath)
+
+      browser.execute(function () {
+        // eslint-disable-next-line no-undef
+        document.querySelector('input[type="file"]').style.display = 'block';
+      });
+
+      await element.setValue(remoteFilePath)
+      await element.waitForDisplayed()
+    }
+    catch (err) {
+      //return false
+    }
+
   }
 
 } module.exports = new ElementUtil();

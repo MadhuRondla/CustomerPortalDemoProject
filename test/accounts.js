@@ -15,17 +15,9 @@ describe('Customer Portal Application', ()=> {
         await LoginPage.doLogin(configData.username, configData.password)
    })
   
-    it('[P1]Verify Account Name Search', async ()=> {
-        allureReporter.addFeature("Accounts")
-        allureReporter.addSeverity('normal')
-        await HomePage.doClickOnViewApplications()
-        await HomePage.doClickOnCustPortalLink()
-        await CustPortalPage.doClickOnAccountsTab()
-        await CustPortalPage.doSearchInAccountsTab("2bone1 Technologies")
-        assert.equal(await CustPortalPage.verifySearchInAccountsTab("2bone1 Technologies"),true)
-    })
+   
 
-    it('[P2]List out Account Names', async ()=> {
+    it('[P1]List out Account Names', async ()=> {
         allureReporter.addFeature("Accounts")
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
@@ -35,7 +27,7 @@ describe('Customer Portal Application', ()=> {
         await ElementUtil.doWriteDataToExcel('./data/TestData.xlsx','AccNames',accList)   
     })   
 
-    it('[P3]Verify Filter in Licenses Tab', async ()=> {
+    it('[P2]Verify Filter in Licenses Tab', async ()=> {
         allureReporter.addFeature("Accounts")
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
@@ -46,7 +38,7 @@ describe('Customer Portal Application', ()=> {
         assert.equal(await CustPortalPage.doVerifyStatusOfLicenseAfterApplyingFilterInLicensesTab('Active'),true)
     })
 
-    it('[P4]Verify Create Account in Accounts Tab', async ()=> {
+    it('[P3]Verify Create Account in Accounts Tab', async ()=> {
         allureReporter.addFeature("Accounts")
         const excelData = await ElementUtil.getTestDataFromExcel('./data/TestData.xlsx', 'AccountCreate')
         for (var i = 1; i < excelData.length; i++) {
@@ -58,16 +50,35 @@ describe('Customer Portal Application', ()=> {
         }
     })
 
-    it.only('[P5]Verify Patch Creation from Accounts Tab', async ()=> {
+    it.only('[P4]Verify Patch Creation from Accounts Tab', async ()=> {
         allureReporter.addFeature("Accounts")
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
         await HomePage.doClickOnCustPortalLink()
         await CustPortalPage.doClickOnAccountsTab()
-        await CustPortalPage.doSearchInAccountsTab("TestAccount123")
-        await CustPortalPage.doClickOnPatchesIconOfGivenAccount("TestAccount123")
-        await CustPortalPage.doCreatePatchFromAccounts()
+        await CustPortalPage.doSearchInAccountsTab("ADP")
+        await CustPortalPage.doClickOnPatchesIconOfGivenAccount("ADP")
+        assert.equal(await CustPortalPage.doCreatePatchFromAccounts(),true) 
 
+    })
+
+    it('[P5]Verify Account Name Search', async ()=> {
+        allureReporter.addFeature("Accounts")
+        allureReporter.addSeverity('normal')
+        await HomePage.doClickOnViewApplications()
+        await HomePage.doClickOnCustPortalLink()
+        await CustPortalPage.doClickOnAccountsTab()
+        await CustPortalPage.doSearchInAccountsTab("2bone1 Technologies")
+        assert.equal(await CustPortalPage.verifySearchInAccountsTab("2bone1 Technologies"),true)
+    })
+
+    it('[P6]Verify Filters in Accounts Tab', async ()=> {
+        allureReporter.addFeature("Accounts")
+        allureReporter.addSeverity('normal')
+        await HomePage.doClickOnViewApplications()
+        await HomePage.doClickOnCustPortalLink()
+        await CustPortalPage.doClickOnAccountsTab()
+        assert.equal(await CustPortalPage.doSelectFilterOptionsInAccountsTab('Partner','Active','SplashBI'),true)  
     })
     
     

@@ -3,6 +3,7 @@ const ElementUtil = require('../util/elementUtil')
 const constData = require('../data/const')
 const assert = require('assert')
 const HomePage = require('../pageobjects/home.page')
+//import path from 'node:path'
 
 
 
@@ -667,16 +668,17 @@ class CustPortalPage {
     await ElementUtil.doScrollDownClick(CustPortalPageElements.solutionCodeOption("SplashHR"))
     await ElementUtil.doClick(CustPortalPageElements.patchTypeDrpdown)
     await ElementUtil.doScrollDownClick(CustPortalPageElements.patchTypeOption("One Off Patch"))
-    await ElementUtil.doSendKeys(CustPortalPageElements.patchNameInputInAccountPatchCreationTab,"testingPatch")
+    await ElementUtil.doSendKeys(CustPortalPageElements.patchNameInputInAccountPatchCreationTab,"testingPatch11")
     await ElementUtil.doClick(CustPortalPageElements.preReqPatchDrpdwnInAccPatchCreationTab)
     // eslint-disable-next-line wdio/no-pause
-    await browser.pause(3000)
+    await browser.pause(2000)
     let optList = await CustPortalPageElements.statusFilterOptions
     await ElementUtil.doSelectValueFromDropdown(optList, "SplashBI_4.1.4")
     await ElementUtil.doClick(CustPortalPageElements.displayDrpdwnInAccPatchCreationTab)
     optList = await CustPortalPageElements.statusFilterOptions
     await ElementUtil.doSelectValueFromDropdown(optList, "Yes")
-    await ElementUtil.doSendKeys(CustPortalPageElements.ticketNoInputInAccountPatchCreationTab,"14141")
+    await ElementUtil.doSendKeys(CustPortalPageElements.ticketNoInputInAccountPatchCreationTab,"30074")
+    await ElementUtil.doSendKeys(CustPortalPageElements.deliveredOnInputInAccPatchCreationTab,"6/5/2023")
     await ElementUtil.doClick(CustPortalPageElements.prodChkboxInAccPatchCreationTab)
     await ElementUtil.doClick(CustPortalPageElements.testChkboxInAccPatchCreationTab)
     await ElementUtil.doClick(CustPortalPageElements.devChkboxInAccPatchCreationTab)
@@ -686,18 +688,88 @@ class CustPortalPage {
     await ElementUtil.doClick(CustPortalPageElements.includeInReplicationDrpdwnInAccPatchCreationTab)
     optList = await CustPortalPageElements.statusFilterOptions
     await ElementUtil.doSelectValueFromDropdown(optList, "Yes")
+    await ElementUtil.doUploadFileWithInvisibleInput(CustPortalPageElements.chooseFileElement,'../data/test.zip')
+    await ElementUtil.doClick(CustPortalPageElements.saveBtnInAccountPatchCreationTab)
+
     // eslint-disable-next-line wdio/no-pause
-    await browser.pause(5000)
-    // if(await ElementUtil.doGetText(CustPortalPageElements.alertDialog)==='Success'){
-    //     await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
-    // return await this.verifySearchInPatchesTab((excelData[1]))
-    // }
-    // else{
-    //     return false                                          
-    // }
+    await browser.pause(2000)
+     if(await ElementUtil.doGetText(CustPortalPageElements.alertDialog)==='Success'){
+        await ElementUtil.doWaitUntillInVisible(CustPortalPageElements.alertDialog)
+        return true
+     }
+     else{
+        return false                                         
+     }
 }
 
+    async doSelectFilterOptionsInAccountsTab(custType, accStatus, accProduct) {
+        try {
+            await ElementUtil.doClick(CustPortalPageElements.filterByCustDrpdownInAccountsTab)
+            let optList = await CustPortalPageElements.statusFilterOptions
+            await ElementUtil.doSelectValueFromDropdown(optList, custType)
+            await ElementUtil.doClick(CustPortalPageElements.filterByStatusDrpdownInAccountsTab)
+            optList = await CustPortalPageElements.statusFilterOptions
+            await ElementUtil.doSelectValueFromDropdown(optList, accStatus)
+            await ElementUtil.doClick(CustPortalPageElements.filterByProductDrpdownInAccountsTab)
+            optList = await CustPortalPageElements.statusFilterOptions
+            await ElementUtil.doSelectValueFromDropdown(optList, accProduct)
+            // eslint-disable-next-line wdio/no-pause
+            await browser.pause(2000)
+            let flag1 = true
+            const status = await ElementUtil.getElementText(await CustPortalPageElements.statusListInAccountsTab)
+            for (const value of status) {
+                if (value != 'Active') {
+                    flag1 = false
+                    return flag1
+                }
+            }
+            for (let i = 0; i < await CustPortalPageElements.infoIconInAccountsTab.length; i++) {
+                await ElementUtil.doClick(await CustPortalPageElements.infoIconInAccountsTab[i])
+                if (await ElementUtil.doGetText(CustPortalPageElements.accountTypeInAccountInfoTab) != custType) {
+                    flag1 = false
+                    return flag1
+                }
+                await ElementUtil.doClick(await CustPortalPageElements.closeIconInAccountInfoTab)
+                await ElementUtil.doClick(await CustPortalPageElements.productsIconInAccountsTab[i])
+                if (await ElementUtil.doGetText(CustPortalPageElements.productInAccountProductsTab) != accProduct) {
+                    flag1 = false
+                    return flag1
+                }
+                await ElementUtil.doClick(await CustPortalPageElements.closeIconInProductsTab)
 
+            }
+
+            if (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null) {
+                do {
+                    await this.doClickOnNextPageIconInAccountsTab()
+                    const status = await ElementUtil.getElementText(await CustPortalPageElements.statusListInAccountsTab)
+                    for (const value of status) {
+                        if (value != 'Active') {
+                            flag1 = false
+                            return flag1
+                        }
+                    }
+                    for (let i = 0; i < await CustPortalPageElements.infoIconInAccountsTab.length; i++) {
+                        await ElementUtil.doClick(await CustPortalPageElements.infoIconInAccountsTab[i])
+                        if (await ElementUtil.doGetText(CustPortalPageElements.accountTypeInAccountInfoTab) != custType) {
+                            flag1 = false
+                            return flag1
+                        }
+                        await ElementUtil.doClick(await CustPortalPageElements.closeIconInAccountInfoTab)
+                        await ElementUtil.doClick(await CustPortalPageElements.productsIconInAccountsTab[i])
+                        if (await ElementUtil.doGetText(CustPortalPageElements.productInAccountProductsTab) != accProduct) {
+                            flag1 = false
+                            return flag1
+                        }
+                        await ElementUtil.doClick(await CustPortalPageElements.closeIconInProductsTab)
+                    }
+                } while (await CustPortalPageElements.nextPageIconInAccountsTab.getAttribute('disabled') === null);
+            } return flag1
+        } catch (error) {
+            //throw new Error(error);
+            return false
+        }
+    }
 
 
 }

@@ -131,10 +131,25 @@ class CustPortalPageElements{
     get devChkboxInAccPatchCreationTab(){return $('[formcontrolname="isInstalledOnDev"] div')}
     get includeInArtifactDrpdwnInAccPatchCreationTab(){return $('[formcontrolname="includeInArtifactory"]')}
     get includeInReplicationDrpdwnInAccPatchCreationTab(){return $('[formcontrolname="includeInReplication"]')}
-
+    get deliveredOnInputInAccPatchCreationTab(){return $('input[placeholder="Delivered on"]')}
 
 
     get saveBtnInAccountPatchCreationTab(){return $('//span[text()="SAVE"]')}
+
+    get filterByCustDrpdownInAccountsTab(){return $('mat-form-field.filByCustomer div.mat-select-value')}
+    get filterByStatusDrpdownInAccountsTab(){return $('mat-form-field.filByStatus div.mat-select-value')}
+    get filterByProductDrpdownInAccountsTab(){return $('mat-form-field.filByProduct div.mat-select-value')}
+    get statusListInAccountsTab(){return $$('td.cdk-column-accountStatus span')}
+
+    get infoIconInAccountsTab(){return $$('button.info mat-icon')}
+    get accountTypeInAccountInfoTab(){return $('[formcontrolname="accountType"] span span')}
+    get closeIconInAccountInfoTab(){return $('mat-sidenav-content > div mat-icon')}
+
+    get productsIconInAccountsTab(){return $$('td.cdk-column-accountProducts span span')}
+    get productInAccountProductsTab(){return $('td.cdk-column-productName span')}
+    get closeIconInProductsTab(){return $('mat-tab-header mat-icon')}
+
+    get chooseFileElement(){return $('input[type="file"]')}
 
 
 
