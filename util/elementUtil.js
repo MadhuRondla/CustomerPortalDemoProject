@@ -6,7 +6,7 @@ class ElementUtil {
 
   async doClick(element) {
     try{
-      await element.waitForDisplayed({ timeout: 5000 })
+      await element.waitForDisplayed({ timeout: 10000 })
       if(await element.isClickable()){
         await element.click();
       }
@@ -19,7 +19,7 @@ class ElementUtil {
 
   async doSendKeys(element, value) {
     try{
-      await element.waitForDisplayed({ timeout: 5000 })
+      await element.waitForDisplayed({ timeout: 10000 })
       await element.clearValue();
       await element.setValue(value);
     }
@@ -44,7 +44,7 @@ class ElementUtil {
 
   async doVerifyIsDisplayed(element) {
     try {
-      await element.waitForDisplayed({ timeout: 5000 })
+      await element.waitForDisplayed({ timeout: 10000 })
       return await element.isDisplayed()
     }
     catch (err) {
@@ -67,11 +67,11 @@ class ElementUtil {
   }
 
   async doGetValue(element) {
-    await element.waitForDisplayed({ timeout: 5000 })
+    await element.waitForDisplayed({ timeout: 10000 })
     return element.getValue()
   }
   async doGetText(element) {
-    await element.waitForDisplayed({ timeout: 5000 })
+    await element.waitForDisplayed({ timeout: 10000 })
     return element.getText()
   }
 

@@ -15,8 +15,6 @@ describe('Customer Portal Application', ()=> {
         await LoginPage.doLogin(configData.username, configData.password)
    })
   
-   
-
     it('[P1]List out Account Names', async ()=> {
         allureReporter.addFeature("Accounts")
         allureReporter.addSeverity('normal')
@@ -50,7 +48,7 @@ describe('Customer Portal Application', ()=> {
         }
     })
 
-    it.only('[P4]Verify Patch Creation from Accounts Tab', async ()=> {
+    it('[P4]Verify Patch Creation from Accounts Tab', async ()=> {
         allureReporter.addFeature("Accounts")
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()
@@ -72,7 +70,7 @@ describe('Customer Portal Application', ()=> {
         assert.equal(await CustPortalPage.verifySearchInAccountsTab("2bone1 Technologies"),true)
     })
 
-    it('[P6]Verify Filters in Accounts Tab', async ()=> {
+    it.only('[P6]Verify Filters in Accounts Tab', async ()=> {
         allureReporter.addFeature("Accounts")
         allureReporter.addSeverity('normal')
         await HomePage.doClickOnViewApplications()

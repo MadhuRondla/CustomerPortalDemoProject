@@ -16,7 +16,7 @@ describe('Customer Portal Application', () => {
         await LoginPage.doLogin(configData.username, configData.password)
    })
 
-   it('[P1]Create Ticket', async () => {
+it('[P1]Create Ticket', async () => {
     allureReporter.addFeature("Tickets")
     allureReporter.addSeverity('blocker')
     await HomePage.doClickOnViewApplications()
